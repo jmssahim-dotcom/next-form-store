@@ -40,23 +40,434 @@
     @media(max-width:620px){header{height:65px;padding:0 18px}.brand-name{font-size:14px}.nav{display:none;position:absolute;top:65px;left:0;right:0;background:var(--paper);padding:20px;flex-direction:column;align-items:flex-start;border-bottom:1px solid var(--line)}.nav.open{display:flex}.menu-btn{display:block}.header-actions{gap:10px}.hero{min-height:510px}.hero-inner{padding:65px 25px}.section{padding:54px 18px}.section-head{align-items:flex-start;flex-direction:column}.toolbar{align-items:stretch}.search-sort{width:100%}.search-sort input{flex:1;min-width:0}.product-grid{gap:20px 10px}.quick-add{opacity:1;transform:none;padding:10px}.product-meta h3{font-size:11px}.price{font-size:10px}.editorial{grid-template-columns:1fr}.editorial-photo{min-height:300px}.editorial-copy{padding:40px 25px}.benefits{grid-template-columns:1fr}.benefit{border-right:0;border-bottom:1px solid var(--line)}.footer-top{grid-template-columns:1fr 1fr;gap:25px}.footer-top>div:first-child{grid-column:1/-1}.footer-bottom{flex-direction:column}.product-detail{grid-template-columns:1fr}.detail-image{min-height:330px;max-height:390px}.detail-copy{padding:28px 22px}.form-grid{grid-template-columns:1fr}.admin-wrap{padding:25px 15px}.admin-title{align-items:flex-start;flex-direction:column}.stats{gap:7px}.stat{padding:13px}.stat strong{font-size:21px}.panel{padding:15px;overflow:auto}.admin-products{min-width:680px}}
     .whatsapp-fab{position:fixed;right:22px;bottom:22px;z-index:40;display:flex;align-items:center;gap:9px;padding:13px 17px;background:#171717;color:#fff;border:1px solid #fff;border-radius:999px;box-shadow:0 9px 28px rgba(0,0,0,.25);font-size:10px;letter-spacing:.08em;text-transform:uppercase}.whatsapp-fab:hover{background:#333}.wa-icon{display:grid;place-items:center;width:23px;height:23px;border:1.5px solid #fff;border-radius:50%;font-size:17px;line-height:1}.admin-login-error{color:#a23d35}
     @media(max-width:600px){.whatsapp-fab{right:12px;bottom:12px;padding:11px 13px;font-size:9px}.admin-title>div:last-child{width:100%}}
-  </style>
+
+    /* NEXT FORM premium motion layer — progressive enhancement, no commerce logic changes */
+    :root{--nf-ease:cubic-bezier(.2,.75,.25,1);--nf-gold:#b9a27c}
+    body{letter-spacing:.005em}
+    .announcement{font-size:9px;letter-spacing:.22em}
+    header{backdrop-filter:blur(16px);background:rgba(247,247,245,.92)}
+    .brand-mark{transition:transform .5s var(--nf-ease),background .35s,color .35s;box-shadow:4px 4px 0 rgba(16,16,16,.08)}
+    .brand:hover .brand-mark{transform:perspective(500px) rotateY(22deg) rotateZ(-8deg) translateY(-2px);background:#111;color:#fff}
+    .hero{isolation:isolate;min-height:clamp(570px,72vh,820px)}
+    .hero:after{content:"";position:absolute;inset:-20%;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 72% 48%,rgba(190,169,132,.22),transparent 36%),linear-gradient(115deg,transparent 40%,rgba(255,255,255,.055) 50%,transparent 60%);animation:nfHeroLight 12s ease-in-out infinite alternate}
+    .hero:before{transform:scale(1.015);animation:nfHeroImage 22s ease-in-out infinite alternate}
+    .hero-inner{max-width:850px}
+    .hero h1{text-shadow:0 8px 36px rgba(0,0,0,.22);animation:nfHeroText .9s var(--nf-ease) both}
+    .hero p{max-width:410px}
+    .hero .eyebrow{letter-spacing:.28em}
+    .btn{transition:transform .28s var(--nf-ease),background .25s,color .25s,box-shadow .25s}
+    .btn:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(0,0,0,.13)}
+    .ticker{letter-spacing:.3em}
+    .section-head h2,.editorial-copy h2{font-weight:800}
+    .product-card{transform-style:preserve-3d;perspective:1000px;transition:transform .45s var(--nf-ease),filter .45s}
+    .product-image{box-shadow:0 8px 24px rgba(0,0,0,.035);transform:translateZ(0);transition:box-shadow .45s var(--nf-ease)}
+    .product-image img{will-change:transform;transition:transform .8s var(--nf-ease),filter .8s}
+    .product-card:hover{transform:translateY(-7px) rotateX(1.2deg)}
+    .product-card:hover .product-image{box-shadow:0 24px 45px rgba(0,0,0,.13)}
+    .product-card:hover .product-image img{transform:scale(1.065);filter:saturate(.92)}
+    .quick-add{backdrop-filter:blur(12px)}
+    .editorial{overflow:hidden}
+    .editorial-photo{transition:transform 1.1s var(--nf-ease);background-attachment:scroll}
+    .editorial:hover .editorial-photo{transform:scale(1.035)}
+    .benefit{transition:background .3s,transform .3s}
+    .benefit:hover{background:rgba(0,0,0,.025);transform:translateY(-3px)}
+    .social-links{display:flex;gap:9px;flex-wrap:wrap;margin:10px 0 14px}
+    .social-link{display:inline-flex!important;align-items:center;gap:8px;padding:7px 10px;border:1px solid #414141;border-radius:999px;color:#ddd!important;transition:background .25s,border-color .25s,transform .25s}
+    .social-link:hover{background:#f3f1ec;color:#111!important;border-color:#f3f1ec;transform:translateY(-2px)}
+    .social-link span{display:grid;place-items:center;width:19px;height:19px;border:1px solid currentColor;border-radius:50%;font-weight:700;font-size:13px}
+    .social-link em{font-style:normal;font-size:9px;letter-spacing:.08em}
+    .social-empty{font-size:10px;color:#888}
+    .admin-tabs{flex-wrap:wrap}
+    .admin-tabs button{transition:background .2s,color .2s,transform .2s}
+    .admin-tabs button:hover{transform:translateY(-2px)}
+    .social-settings-panel{max-width:760px}
+    .social-settings-form{max-width:560px}
+    .social-settings-form input{min-height:46px}
+    .panel,.stat{box-shadow:0 8px 28px rgba(0,0,0,.035);border-color:#e7e4de}
+    .toast{border:1px solid #444}
+    .reveal-ready .reveal-item{opacity:0;transform:translateY(22px);transition:opacity .75s var(--nf-ease),transform .75s var(--nf-ease)}
+    .reveal-ready .reveal-item.is-visible{opacity:1;transform:translateY(0)}
+    @keyframes nfHeroImage{from{transform:scale(1.015)}to{transform:scale(1.075)}}
+    @keyframes nfHeroLight{from{opacity:.35;transform:translate3d(-2%,0,0)}to{opacity:.9;transform:translate3d(2%,-1%,0)}}
+    @keyframes nfHeroText{from{opacity:0;transform:translateY(22px);filter:blur(5px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+    @media(max-width:620px){.hero{min-height:560px}.hero h1{font-size:clamp(48px,13vw,76px)}.product-card:hover{transform:translateY(-3px)}.social-links{gap:7px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal-ready .reveal-item{opacity:1;transform:none}}
+
+  
+/* NEXT FORM V4 — refined motion system */
+:root{--motion-ease:cubic-bezier(.2,.75,.25,1)}
+body{overflow-x:hidden}
+::selection{background:#111;color:#fff}
+header{backdrop-filter: blur(16px);-webkit-backdrop-filter:blur(16px);transition:background .35s var(--motion-ease),box-shadow .35s var(--motion-ease)}
+.brand-mark{transition:transform .55s var(--motion-ease),background .35s,color .35s}
+.brand:hover .brand-mark{transform:rotate(-9deg) scale(1.06);background:#111;color:#fff}
+.nav a,.icon-btn,.filter,.btn{transition:color .25s ease,background .3s ease,border-color .3s ease,transform .35s var(--motion-ease),box-shadow .35s ease}
+.btn{position:relative;isolation:isolate;overflow:hidden}
+.btn:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.25) 48%,transparent 76%);transform:translateX(-130%);transition:transform .75s var(--motion-ease);z-index:-1}
+.btn:hover:before{transform:translateX(130%)}
+.hero{isolation:isolate;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:-20%;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 72% 45%,rgba(255,255,255,.13),transparent 36%);animation:nfAtmosphere 11s ease-in-out infinite alternate}
+.hero-inner>*{animation:nfHeroIn .9s var(--motion-ease) both}
+.hero-inner .eyebrow{animation-delay:.08s}.hero-inner h1{animation-delay:.18s}.hero-inner p{animation-delay:.3s}.hero-inner .btn{animation-delay:.42s}
+@keyframes nfAtmosphere{from{transform:translate3d(-2%,1%,0) scale(.96);opacity:.45}to{transform:translate3d(2%,-1%,0) scale(1.08);opacity:.9}}
+@keyframes nfHeroIn{from{opacity:0;transform:translate3d(0,28px,0);filter:blur(5px)}to{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}}
+.ticker{will-change:transform}
+.product-card{transform-style:preserve-3d;will-change:transform;transition:transform .45s var(--motion-ease),box-shadow .45s var(--motion-ease),border-color .35s ease}
+.product-card .product-image{overflow:hidden;transform:translateZ(0)}
+.product-card .product-image img{transition:transform .9s var(--motion-ease),filter .6s ease}
+.product-card:hover .product-image img{transform:scale(1.075);filter:contrast(1.04)}
+.product-card .product-info{transition:transform .4s var(--motion-ease)}
+.product-card:hover .product-info{transform:translateY(-3px)}
+.reveal-item{opacity:0;transform:translate3d(0,28px,0);filter:blur(3px);transition:opacity .8s var(--motion-ease),transform .8s var(--motion-ease),filter .8s ease}
+.reveal-item.is-visible{opacity:1;transform:none;filter:none}
+.section-head h2{transition:letter-spacing .5s var(--motion-ease)}
+.section-head:hover h2{letter-spacing:-.035em}
+.social-link{transition:transform .3s var(--motion-ease),background .3s ease,color .3s ease}
+.social-link:hover{transform:translateY(-4px)}
+.whatsapp-fab{transition:transform .35s var(--motion-ease),box-shadow .35s ease}
+.whatsapp-fab:hover{transform:translateY(-5px) scale(1.025);box-shadow:0 16px 38px rgba(0,0,0,.2)}
+.modal,.drawer{will-change:transform,opacity}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #777;outline-offset:4px}
+@media(hover:none),(pointer:coarse){.product-card{transform:none!important}.product-card:hover{transform:none}.product-card:hover .product-image img{transform:none}}
+@media(prefers-reduced-motion:reduce){.hero:before{animation:none}.hero-inner>*{animation:none}.product-card,.product-card *,.btn,.social-link,.whatsapp-fab{transition:none!important}.reveal-item{opacity:1;transform:none;filter:none}}
+
+  
+/* NEXT FORM V4 — interactive product studio */
+.product-detail{grid-template-columns:minmax(0,1.08fr) minmax(320px,.92fr);gap:0}
+.detail-image{
+  min-height:590px;max-height:760px;position:relative;overflow:hidden;
+  display:grid;place-items:center;perspective:1300px;isolation:isolate;
+  background:radial-gradient(ellipse at 50% 43%,#fff 0%,#e8e5df 48%,#d6d2ca 100%);
+}
+.detail-image:before{
+  content:"";position:absolute;width:72%;aspect-ratio:1;border:1px solid rgba(20,20,20,.10);
+  border-radius:50%;box-shadow:0 0 0 32px rgba(255,255,255,.12),0 0 0 66px rgba(255,255,255,.08);
+  animation:nfStudioPulse 5s ease-in-out infinite;pointer-events:none
+}
+.detail-image:after{
+  content:"";position:absolute;bottom:12%;width:48%;height:7%;border-radius:50%;
+  background:rgba(0,0,0,.22);filter:blur(22px);transform:scaleX(.8);
+  transition:transform .25s ease,opacity .25s ease;pointer-events:none
+}
+.detail-image.is-dragging:after{transform:scaleX(1.08);opacity:.7}
+.detail-image .viewer-image{
+  position:relative;z-index:1;width:min(78%,470px);height:min(78%,560px);
+  object-fit:contain;filter:drop-shadow(0 28px 22px rgba(0,0,0,.19));
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--zoom,1));
+  transform-style:preserve-3d;transform-origin:center;will-change:transform;
+  transition:transform .16s ease-out,filter .5s ease;cursor:grab;user-select:none;
+  -webkit-user-drag:none;animation:nfProductArrive .85s cubic-bezier(.18,.8,.2,1) both
+}
+.detail-image.is-dragging .viewer-image{cursor:grabbing;transition:none}
+.detail-image.auto-spin .viewer-image{animation:nfProductArrive .85s cubic-bezier(.18,.8,.2,1) both,nfProductFloat 4.5s ease-in-out 0.85s infinite}
+.viewer-topline{position:absolute;z-index:3;top:18px;left:20px;right:20px;display:flex;justify-content:space-between;align-items:center;pointer-events:none}
+.viewer-chip{font-size:8px;letter-spacing:.19em;text-transform:uppercase;color:#343434;background:rgba(255,255,255,.58);backdrop-filter:blur(12px);padding:9px 11px;border:1px solid rgba(0,0,0,.08)}
+.viewer-hint{position:absolute;z-index:3;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:9px;white-space:nowrap;background:rgba(255,255,255,.76);backdrop-filter:blur(14px);border:1px solid rgba(0,0,0,.08);padding:10px 14px;border-radius:999px;font-size:8px;letter-spacing:.16em;text-transform:uppercase;animation:nfHintPulse 2.4s ease-in-out infinite;pointer-events:none}
+.viewer-hint .hint-orbit{font-size:15px;line-height:1;animation:nfHintSpin 3s linear infinite}
+.viewer-controls{position:absolute;z-index:4;right:16px;bottom:20px;display:flex;gap:6px}
+.viewer-control{width:34px;height:34px;border-radius:50%;border:1px solid rgba(0,0,0,.16);background:rgba(255,255,255,.78);backdrop-filter:blur(12px);font-size:15px;display:grid;place-items:center;cursor:pointer;transition:transform .25s,background .25s,color .25s}
+.viewer-control:hover{transform:translateY(-3px);background:#111;color:#fff}
+.viewer-control[aria-pressed="true"]{background:#111;color:#fff}
+.detail-copy{align-self:center}
+.detail-copy .eyebrow{letter-spacing:.2em}
+.detail-copy h2{font-size:clamp(28px,3vw,42px);line-height:1.02}
+.detail-copy .detail-price{font-size:17px}
+@keyframes nfStudioPulse{0%,100%{transform:scale(.96);opacity:.48}50%{transform:scale(1.04);opacity:.9}}
+@keyframes nfProductArrive{0%{opacity:0;transform:translateY(28px) rotateX(9deg) rotateY(-14deg) scale(.88);filter:blur(8px) drop-shadow(0 28px 22px rgba(0,0,0,.12))}100%{opacity:1;transform:rotateX(0) rotateY(0) scale(1);filter:drop-shadow(0 28px 22px rgba(0,0,0,.19))}}
+@keyframes nfProductFloat{0%,100%{translate:0 0}50%{translate:0 -9px}}
+@keyframes nfHintPulse{0%,100%{box-shadow:0 4px 18px rgba(0,0,0,.04);opacity:.82}50%{box-shadow:0 8px 28px rgba(0,0,0,.12);opacity:1}}
+@keyframes nfHintSpin{to{transform:rotate(360deg)}}
+@media(max-width:760px){
+ .product-detail{grid-template-columns:1fr}
+ .detail-image{min-height:390px;max-height:480px}
+ .detail-image .viewer-image{width:min(72%,340px);height:78%}
+ .detail-copy{padding:28px 22px 32px}
+ .viewer-controls{right:12px;bottom:13px}
+ .viewer-hint{bottom:18px;left:16px;transform:none;font-size:7px}
+}
+@media(prefers-reduced-motion:reduce){
+ .detail-image:before,.viewer-hint .hint-orbit{animation:none}
+ .detail-image .viewer-image{animation:none!important;transition:none}
+ .viewer-hint{animation:none}
+}
+
+  
+/* V5: balanced editorial hero + scroll reveal */
+.hero-v5{display:grid;grid-template-columns:minmax(0,1fr) minmax(390px,.9fr);align-items:center;gap:2vw;padding:58px 7vw 72px;min-height:clamp(620px,78vh,850px);background:radial-gradient(ellipse at 78% 48%,#34312c 0%,#1b1b1a 37%,#101010 76%)}
+.hero-v5:before{background:linear-gradient(90deg,rgba(0,0,0,.2),rgba(0,0,0,.03));opacity:.35}
+.hero-v5:after{inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.055) 50%,transparent 65%);animation:nfHeroLight 10s ease-in-out infinite alternate}
+.hero-v5 .hero-inner{padding:38px 2vw;max-width:680px}
+.hero-v5 .hero-art{position:relative;min-height:530px;height:min(64vh,650px);display:grid;place-items:center;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 50% 48%,rgba(194,180,157,.2),transparent 55%)}
+.hero-art:before{content:"";position:absolute;width:68%;aspect-ratio:1;border:1px solid rgba(220,210,195,.24);border-radius:50%;box-shadow:0 0 0 35px rgba(255,255,255,.025),0 0 0 75px rgba(255,255,255,.018);animation:nfOrbit 24s linear infinite}
+.hero-art:after{content:"";position:absolute;bottom:9%;width:52%;height:5%;border-radius:50%;background:#000;filter:blur(24px);opacity:.7}
+.art-garment{z-index:2;width:min(78%,420px);filter:drop-shadow(0 34px 26px rgba(0,0,0,.55));animation:nfGarmentFloat 6s ease-in-out infinite;transform-origin:50% 55%}
+.art-garment svg{width:100%;height:auto;overflow:visible}
+.art-orbit{position:absolute;border:1px solid rgba(220,210,195,.16);border-radius:50%;z-index:1}
+.orbit-one{width:83%;height:36%;transform:rotate(-28deg)}.orbit-two{width:72%;height:30%;transform:rotate(34deg)}
+.art-label{position:absolute;z-index:3;color:#d8d0c3;font-size:8px;letter-spacing:.24em}.art-label-top{top:28px;left:8%}.art-label-bottom{bottom:27px;left:8%;right:8%;display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.22);padding-top:13px}.art-side-note{position:absolute;right:2%;top:38%;font-size:8px;line-height:1.8;letter-spacing:.22em;color:rgba(255,255,255,.5);writing-mode:vertical-rl}
+.hero-index{margin-top:52px;color:rgba(255,255,255,.42);font-size:8px;letter-spacing:.24em}
+.hero-scroll{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.58);font-size:8px;letter-spacing:.24em;display:flex;gap:12px;align-items:center;z-index:3}.hero-scroll span{font-size:16px;animation:nfScrollNudge 1.5s ease-in-out infinite}
+@keyframes nfGarmentFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-13px) rotate(2deg)}}@keyframes nfOrbit{to{transform:rotate(332deg)}}@keyframes nfScrollNudge{0%,100%{transform:translateY(-2px)}50%{transform:translateY(5px)}}
+/* Reveal sections as they enter the viewport */
+.nf-reveal{opacity:0;transform:translateY(34px);transition:opacity .85s cubic-bezier(.2,.7,.2,1),transform .85s cubic-bezier(.2,.7,.2,1)}.nf-reveal.nf-visible{opacity:1;transform:translateY(0)}
+.nf-reveal-stagger>*{transition-delay:var(--reveal-delay,0ms)}
+@media(max-width:900px){.hero-v5{grid-template-columns:1fr;padding:52px 6vw 76px;gap:0}.hero-v5 .hero-inner{padding:28px 0 10px}.hero-v5 .hero-art{min-height:390px;height:48vh;max-height:490px}.art-garment{width:min(65%,330px)}.hero-index{margin-top:30px}}
+@media(max-width:560px){.hero-v5{min-height:auto}.hero-v5 .hero-art{min-height:330px;height:390px}.hero-scroll{bottom:12px}.art-side-note{right:0}.art-label-top{top:14px}}
+@media(prefers-reduced-motion:reduce){.art-garment,.hero-art:before,.hero-scroll span{animation:none}.nf-reveal{opacity:1;transform:none;transition:none}}
+
+
+/* V6: real-model editorial campaign animation */
+.hero-v5 .hero-model-campaign{position:relative;min-height:530px;height:min(64vh,650px);display:grid;place-items:center;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 52% 46%,rgba(176,164,146,.22),rgba(18,18,18,.18) 48%,transparent 72%)}
+.hero-model-campaign .model-campaign-glow{position:absolute;width:72%;aspect-ratio:1;border-radius:50%;background:rgba(218,207,190,.055);filter:blur(34px);animation:nfCampaignGlow 5s ease-in-out infinite alternate}
+.hero-model-campaign .model-campaign-frame{position:absolute;width:68%;height:78%;border:1px solid rgba(225,216,202,.22);box-shadow:0 0 0 22px rgba(255,255,255,.018),0 0 60px rgba(255,255,255,.04);transform:rotate(2deg);animation:nfFrameBreathe 7s ease-in-out infinite}
+.model-campaign-gif{position:relative;z-index:2;width:min(88%,680px);height:auto;aspect-ratio:3/2;object-fit:cover;filter:contrast(1.06) saturate(.72);mix-blend-mode:screen;mask-image:radial-gradient(ellipse at center,#000 55%,transparent 100%);animation:nfModelArrive 1.2s cubic-bezier(.2,.8,.2,1) both;box-shadow:0 28px 70px rgba(0,0,0,.3)}
+.model-campaign-brand{position:absolute;z-index:4;bottom:10%;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:11px;color:#f4f1eb;text-shadow:0 2px 18px #000;white-space:nowrap;animation:nfBrandReveal 1.5s .4s both}
+.nf-brand-mark{width:38px;height:38px;border:1px solid rgba(255,255,255,.82);display:grid;place-items:center;font:700 16px Manrope,sans-serif;letter-spacing:-.08em}
+.nf-brand-name{font:700 clamp(14px,2vw,22px) Manrope,sans-serif;letter-spacing:.28em}
+.model-campaign-brand small{position:absolute;top:45px;left:50%;transform:translateX(-50%);font-size:7px;letter-spacing:.28em;color:#d5cbbb}
+.hero-model-campaign .art-label-top{top:5%;left:7%}
+.hero-model-campaign .art-label-bottom{bottom:5%;left:7%;right:7%;display:flex;justify-content:space-between;border-top:1px solid rgba(230,220,205,.25);padding-top:12px}
+.hero-model-campaign .art-side-note{right:3%;top:45%;writing-mode:vertical-rl;letter-spacing:.24em}
+@keyframes nfCampaignGlow{from{transform:scale(.88);opacity:.45}to{transform:scale(1.08);opacity:.9}}
+@keyframes nfFrameBreathe{0%,100%{transform:rotate(2deg) scale(.97);opacity:.55}50%{transform:rotate(-1deg) scale(1.02);opacity:1}}
+@keyframes nfModelArrive{from{opacity:0;transform:translateY(22px) scale(.94);filter:blur(8px)}to{opacity:1;transform:translateY(0) scale(1);filter:contrast(1.06) saturate(.72)}}
+@keyframes nfBrandReveal{from{opacity:0;letter-spacing:.5em}to{opacity:1;letter-spacing:normal}}
+@media(max-width:900px){.hero-v5 .hero-model-campaign{min-height:390px;height:48vh;max-height:490px}.model-campaign-gif{width:min(92%,570px)}.model-campaign-brand{bottom:9%}}
+@media(max-width:560px){.hero-v5 .hero-model-campaign{min-height:330px;height:390px}.model-campaign-gif{width:100%}.hero-model-campaign .art-side-note{right:1%}.model-campaign-brand{bottom:11%}.nf-brand-name{letter-spacing:.18em}}
+@media(prefers-reduced-motion:reduce){.model-campaign-glow,.model-campaign-frame,.model-campaign-brand{animation:none}}
+
+
+/* NEXT FORM / Reference showroom design */
+:root{
+ --ink:#101012;--paper:#f6f1e9;--white:#fff;--muted:#77716a;--line:#ddd5c9;
+ --accent:#c7a36a;--soft:#eee8de;--shadow:0 18px 60px rgba(0,0,0,.18);
+ --nf-black:#090a0c;--nf-gold:#c5a16a;--nf-cream:#f1ece4;
+}
+body{background:var(--nf-cream);color:#121212}
+.nf-announcement{background:linear-gradient(90deg,#171511,#27231b,#171511);color:#e8ddcb;border-bottom:1px solid rgba(197,161,106,.36);padding:10px 14px;font-size:9px;letter-spacing:.19em;font-weight:600}
+.nf-announcement span{color:#c5a16a;padding:0 12px}
+.nf-header{height:82px;background:#090a0c;color:#f5f2ec;border-bottom:1px solid rgba(255,255,255,.1);padding:0 4.4vw;gap:22px}
+.nf-header .brand{color:#fff;gap:13px;flex-shrink:0}
+.nf-header .brand-mark{width:48px;height:48px;border:1px solid #e8e4dc;color:#fff;font-size:20px;letter-spacing:-3px;transform:none}
+.nf-header .brand-name{font-size:22px;letter-spacing:.19em}
+.nf-header .nav{gap:clamp(14px,2.9vw,46px);justify-content:center;flex:1}
+.nf-header .nav a{font-size:12px;letter-spacing:.02em;text-transform:none;color:#eee9e0;padding:10px 0}
+.nf-header .nav a.active,.nf-header .nav a:hover{color:#d6b77f}
+.nf-header .nav a.active:after{content:"";display:block;height:2px;background:#c7a36a;margin-top:12px}
+.nf-header .header-actions{gap:11px}
+.nf-header .icon-btn{color:#f7f2e9;text-transform:none;letter-spacing:0;font-size:12px}
+.nf-header .nf-search-open,.nf-header .nf-account-open{width:34px;height:34px;font-size:25px}
+.nf-header .nf-admin-pill,.nf-header .nf-bag-pill{border:1px solid rgba(197,161,106,.38);border-radius:999px;padding:11px 16px;background:linear-gradient(145deg,#171615,#0c0c0d)}
+.nf-header .nf-bag-pill{background:linear-gradient(145deg,#332919,#171513)}
+.nf-header .cart-count{background:#c4a16a;color:#111}
+.hero.nf-showroom{min-height:610px;height:min(720px,calc(100vh - 115px));max-height:760px;display:grid;grid-template-columns:minmax(285px,.92fr) minmax(410px,1.28fr) minmax(245px,.68fr);align-items:center;gap:clamp(12px,2vw,34px);padding:36px 4.4vw 34px;background:radial-gradient(ellipse at 51% 48%,#30291f 0%,#191816 32%,#0a0b0d 76%);color:#fff}
+.hero.nf-showroom:before,.hero.nf-showroom:after{content:none;display:none}
+.nf-hero-copy{position:relative;z-index:2;align-self:center;padding:12px 0 4px}
+.nf-overline{display:flex;align-items:center;gap:12px;color:#d7bb8c;font-size:10px;letter-spacing:.19em;font-weight:600}
+.nf-overline>span{width:34px;height:1px;background:#c9a56c}
+.nf-hero-copy h1{font-size:clamp(43px,4.35vw,76px);line-height:.98;letter-spacing:-.065em;font-weight:600;margin:28px 0 18px;color:#f8f6f1}
+.nf-hero-copy h1 em{font-style:normal;color:#d0ad75}
+.nf-hero-copy p{font-size:clamp(13px,1.18vw,18px);line-height:1.6;color:#e1ddd5;margin:0 0 31px;max-width:440px}
+.nf-hero-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.nf-gold-button,.nf-story-button{min-height:50px;padding:0 20px;display:inline-flex;align-items:center;justify-content:center;gap:14px;border-radius:5px;font-size:12px;font-weight:700;transition:transform .25s,box-shadow .25s,background .25s}
+.nf-gold-button{background:linear-gradient(110deg,#d9b77e,#bb9254);color:#17120b;box-shadow:0 7px 24px rgba(201,161,96,.16)}
+.nf-gold-button:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(201,161,96,.28)}
+.nf-gold-button b{font-size:18px;font-weight:400}
+.nf-story-button{border:1px solid rgba(231,221,205,.62);color:#f4eee3;background:rgba(255,255,255,.025)}
+.nf-story-button span{width:22px;height:22px;border:1px solid #c7a36a;border-radius:50%;display:grid;place-items:center;color:#d3b27b}
+.nf-benefits{display:flex;align-items:center;gap:clamp(12px,1.6vw,25px);margin-top:42px;flex-wrap:wrap;color:#e0d8ca;font-size:10px}
+.nf-benefits span{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.nf-benefits b{color:#d1ae74;font-size:22px;font-weight:400}
+.nf-edition{margin-top:43px;color:rgba(230,222,208,.45);font-size:8px;letter-spacing:.24em}
+.nf-product-showcase{position:relative;align-self:stretch;min-width:0;display:grid;place-items:center;isolation:isolate;overflow:hidden;touch-action:pan-y;cursor:grab}
+.nf-product-showcase.is-dragging{cursor:grabbing}
+.nf-product-showcase:before{content:"";position:absolute;width:68%;aspect-ratio:1;border:1px solid rgba(215,179,117,.48);border-radius:50%;box-shadow:0 0 0 30px rgba(255,255,255,.018),0 0 0 64px rgba(255,255,255,.012),0 0 48px rgba(203,163,97,.10);animation:nfRingPulse 6s ease-in-out infinite}
+.nf-product-showcase:after{content:"";position:absolute;inset:4% 2%;background:radial-gradient(ellipse at 50% 40%,rgba(197,161,106,.16),transparent 65%);pointer-events:none;z-index:-1}
+.nf-product-orbit{position:absolute;width:80%;height:49%;border:1px solid rgba(210,171,110,.28);border-radius:50%;pointer-events:none}
+.nf-orbit-a{transform:rotate(-30deg);animation:nfOrbitTurn 28s linear infinite}
+.nf-orbit-b{width:72%;height:42%;transform:rotate(28deg);border-color:rgba(255,255,255,.10);animation:nfOrbitTurn 34s linear infinite reverse}
+.nf-product-topline{position:absolute;top:8%;left:7%;right:6%;display:flex;justify-content:space-between;gap:10px;color:#d2c2a6;font-size:8px;letter-spacing:.2em;z-index:5}
+.nf-product-topline span{color:rgba(240,231,217,.56);font-size:7px}
+.nf-360-label{position:absolute;left:2%;top:32%;z-index:5;color:#e9dfce;text-align:center;display:grid;gap:0;font-size:17px;font-weight:600}
+.nf-360-label span{font-size:24px;color:#d3ad70}
+.nf-jacket-wrap{position:relative;z-index:3;width:86%;height:78%;display:grid;place-items:center;perspective:1200px;transform-style:preserve-3d}
+#nfJacketFrame{width:100%;height:100%;object-fit:contain;mix-blend-mode:screen;filter:drop-shadow(0 32px 25px rgba(0,0,0,.55)) contrast(1.1);user-select:none;-webkit-user-drag:none;pointer-events:none;transition:opacity .2s,transform .38s cubic-bezier(.2,.8,.2,1);animation:nfJacketFloat 5.8s ease-in-out infinite}
+#nfJacketFrame.nf-changing{opacity:.35;transform:translateY(7px) scale(.96)}
+.nf-podium{position:absolute;z-index:2;bottom:8%;left:9%;right:9%;height:34px;border-radius:50%;background:linear-gradient(180deg,#272727,#080808 52%,#171411);border:1px solid rgba(221,194,150,.65);box-shadow:0 8px 0 #050505,0 11px 28px rgba(0,0,0,.75),0 0 22px rgba(203,163,97,.34)}
+.nf-podium:after{content:"";position:absolute;left:3%;right:3%;bottom:-8px;height:5px;border-radius:50%;background:#d5ad6b;filter:blur(7px)}
+.nf-rotate-arrow{position:absolute;z-index:6;top:52%;width:39px;height:39px;border:1px solid rgba(218,185,131,.8);background:rgba(10,10,10,.48);color:#f3e6d2;border-radius:50%;font-size:26px;display:grid;place-items:center;transition:.2s}
+.nf-rotate-arrow:hover{background:#c5a16a;color:#111;transform:scale(1.08)}
+.nf-rotate-prev{left:1%}.nf-rotate-next{right:14%}
+.nf-product-thumbs{position:absolute;z-index:7;right:2%;top:19%;display:grid;gap:8px}
+.nf-angle-thumb{width:58px;height:65px;padding:2px;border:1px solid rgba(211,174,116,.55);background:#181715;border-radius:8px;overflow:hidden;opacity:.72;transition:.2s}
+.nf-angle-thumb.active,.nf-angle-thumb:hover{opacity:1;border-color:#e0bd82;box-shadow:0 0 14px rgba(208,165,99,.2)}
+.nf-angle-thumb img{width:100%;height:100%;object-fit:cover;mix-blend-mode:screen}
+.nf-product-dots{position:absolute;bottom:2%;left:50%;transform:translateX(-50%);display:flex;gap:12px;z-index:6}
+.nf-product-dots span{width:10px;height:10px;border:1px solid #d4b177;border-radius:50%}
+.nf-product-dots span.active{background:#d3ad70}
+.nf-product-caption{position:absolute;bottom:7%;left:50%;transform:translateX(-50%);z-index:5;white-space:nowrap;color:#e2d5bd;font-size:9px;letter-spacing:.22em}
+.nf-product-caption small{display:block;text-align:center;font-size:7px;letter-spacing:.18em;color:#b7a68d;margin-top:6px}
+.nf-collection-panel{align-self:center;min-width:0;border-left:1px solid rgba(218,192,151,.23);padding-left:clamp(15px,1.7vw,28px);display:grid;gap:15px}
+.nf-collection-heading{font-size:12px;color:#d3b17b;letter-spacing:.28em;margin:0 0 7px}
+.nf-collection-card{position:relative;width:100%;height:clamp(94px,9.2vw,138px);min-height:94px;padding:0;border:1px solid rgba(217,203,181,.2);background:#151515;border-radius:12px;overflow:hidden;display:grid;grid-template-columns:56% 44%;align-items:stretch;text-align:left;color:#fff;transition:transform .25s,border-color .25s,box-shadow .25s}
+.nf-collection-card:hover{transform:translateY(-3px);border-color:rgba(215,178,119,.8);box-shadow:0 12px 26px rgba(0,0,0,.24)}
+.nf-collection-photo{background-image:linear-gradient(90deg,transparent 65%,#151515 100%),var(--collection-image);background-size:cover;background-position:center;display:block;min-width:0}
+.nf-collection-copy{display:flex;flex-direction:column;justify-content:center;gap:16px;padding:8px 9px 8px 0}
+.nf-collection-copy b{font-size:clamp(10px,.95vw,14px);letter-spacing:.06em}
+.nf-collection-copy small{font-size:11px;color:#d7b681;text-decoration:underline;text-underline-offset:5px}
+.nf-collection-copy i{font-style:normal;text-decoration:none;margin-left:7px}
+.nf-featured{background:var(--nf-cream);padding:34px 4vw 64px;color:#161514;border-top:1px solid #e0d8cc}
+.nf-featured-heading{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:20px}
+.nf-featured-heading h2{font-family:Manrope,sans-serif;font-size:clamp(20px,2vw,27px);letter-spacing:.08em;text-align:center;margin:0;font-weight:700}
+.nf-featured-heading span{width:37px;height:2px;background:#c4a16b}
+.nf-featured-filters{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 auto 25px}
+.nf-featured-filters button{border:1px solid #d8cfc2;background:transparent;border-radius:999px;padding:9px 22px;color:#222;font-size:12px;transition:.2s}
+.nf-featured-filters button.active,.nf-featured-filters button:hover{background:#151515;color:#fff;border-color:#151515}
+.nf-featured .product-grid{gap:22px}
+.nf-featured .product-image{border-radius:9px;background:#ded8cf}
+.nf-view-all{text-align:center;margin-top:25px}
+.nf-view-all a{font-size:10px;letter-spacing:.2em;border-bottom:1px solid #b79b70;padding-bottom:8px}
+.nf-view-all span{color:#a17b46;margin-left:8px}
+#shop{background:#f6f1e9;color:#171514}
+#shop .toolbar .filter.active,#shop .toolbar .filter:hover{background:#1b1b1b;border-color:#1b1b1b;color:#fff}
+.ticker{display:none}
+@keyframes nfRingPulse{0%,100%{transform:scale(.96);opacity:.7}50%{transform:scale(1.04);opacity:1}}
+@keyframes nfOrbitTurn{to{rotate:360deg}}
+@keyframes nfJacketFloat{0%,100%{transform:translateY(1px) rotateY(-3deg)}50%{transform:translateY(-9px) rotateY(3deg)}}
+@media(max-width:1200px){
+ .hero.nf-showroom{grid-template-columns:minmax(260px,.85fr) minmax(360px,1.15fr);min-height:610px;height:auto}
+ .nf-collection-panel{grid-column:1/-1;grid-template-columns:repeat(3,1fr);border-left:0;border-top:1px solid rgba(218,192,151,.23);padding:18px 0 0}
+ .nf-collection-heading{grid-column:1/-1}
+ .nf-collection-card{height:118px}
+}
+@media(max-width:760px){
+ .nf-header{height:auto;min-height:70px;padding:10px 16px;gap:8px;flex-wrap:wrap}
+ .nf-header .brand-mark{width:38px;height:38px;font-size:16px}
+ .nf-header .brand-name{font-size:15px;letter-spacing:.13em}
+ .nf-header .nav{display:none;position:absolute;top:100%;left:0;right:0;background:#0b0b0d;padding:18px 22px;flex-direction:column;align-items:flex-start;gap:12px;border-bottom:1px solid rgba(255,255,255,.12)}
+ .nf-header .nav.open{display:flex}
+ .nf-header .menu-btn{display:block;color:#fff;order:0}
+ .nf-header .brand{order:1;margin-right:auto}
+ .nf-header .nav{order:4}
+ .nf-header .header-actions{order:2;gap:5px}
+ .nf-header .nf-search-open,.nf-header .nf-account-open{display:none}
+ .nf-header .nf-admin-pill,.nf-header .nf-bag-pill{padding:9px 10px;font-size:10px}
+ .nf-header .nf-admin-pill span,.nf-header .nf-bag-pill>span:not(.cart-count){display:none}
+ .nf-announcement{font-size:7px;letter-spacing:.09em}
+ .hero.nf-showroom{grid-template-columns:1fr;min-height:0;height:auto;max-height:none;padding:38px 20px 28px;gap:8px}
+ .nf-hero-copy h1{font-size:clamp(44px,12vw,66px);margin:20px 0 14px}
+ .nf-hero-copy p{font-size:13px}
+ .nf-benefits{margin-top:24px;gap:13px}
+ .nf-edition{margin-top:23px}
+ .nf-product-showcase{height:490px;min-height:440px}
+ .nf-jacket-wrap{height:76%;width:90%}
+ .nf-product-thumbs{right:0;top:16%;gap:6px}
+ .nf-angle-thumb{width:47px;height:53px}
+ .nf-rotate-prev{left:0}.nf-rotate-next{right:14%}
+ .nf-360-label{left:0;top:29%}
+ .nf-podium{bottom:11%}
+ .nf-product-caption{bottom:10%}
+ .nf-collection-panel{grid-template-columns:1fr;gap:10px;margin-top:12px}
+ .nf-collection-heading{margin-bottom:2px}
+ .nf-collection-card{height:106px}
+ .nf-collection-photo{background-position:center 40%}
+ .nf-featured{padding:32px 17px 48px}
+ .nf-featured-filters{gap:7px}
+ .nf-featured-filters button{padding:8px 14px;font-size:11px}
+ .nf-featured .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 10px}
+}
+@media(prefers-reduced-motion:reduce){
+ .nf-product-showcase:before,.nf-orbit-a,.nf-orbit-b,#nfJacketFrame{animation:none}
+ .nf-gold-button,.nf-collection-card,#nfJacketFrame{transition:none}
+}
+
+</style>
 </head>
 <body>
   <div class="storefront" id="storefront">
-    <div class="announcement">Complimentary delivery on orders over ৳5,000 · New season, new form</div>
-    <header>
+    <div class="announcement nf-announcement">FREE DELIVERY ON ORDERS OVER ৳5,000 <span>│</span> NEW SEASON: URBAN ESSENTIALS</div>
+    <header class="nf-header">
       <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
       <a class="brand" href="#home" aria-label="NEXT FORM home"><span class="brand-mark">NF</span><span class="brand-name">NEXT FORM</span></a>
-      <nav class="nav" id="nav"><a href="#shop">Shop</a><a href="#story">Our approach</a><a href="#footer">Contact</a></nav>
-      <div class="header-actions"><button class="icon-btn" id="adminOpen">Admin</button><button class="icon-btn" id="cartOpen">Bag <span class="cart-count" id="cartCount">0</span></button></div>
+      <nav class="nav" id="nav">
+        <a class="active" href="#home">Home</a>
+        <a href="#shop">Shop⌄</a>
+        <a href="#featuredSection">Collections</a>
+        <a href="#story">Lookbook</a>
+        <a href="#story">About</a>
+        <a href="#footer">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn nf-search-open" id="searchOpen" aria-label="Search">⌕</button>
+        <button class="icon-btn nf-account-open" id="accountOpen" aria-label="Account">♙</button>
+        <button class="icon-btn nf-admin-pill" id="adminOpen">↗ <span>Admin</span></button>
+        <button class="icon-btn nf-bag-pill" id="cartOpen">♧ <span>Bag</span> <span class="cart-count" id="cartCount">0</span></button>
+      </div>
     </header>
     <main id="home">
-      <section class="hero"><div class="hero-inner"><div class="eyebrow">Contemporary menswear · Collection 01</div><h1>REDEFINE<br>THE EVERYDAY.</h1><p>Considered essentials. Modern silhouettes. A new perspective on everyday menswear.</p><a class="btn btn-light" href="#shop">Explore the collection <span>↗</span></a></div></section>
-      <div class="ticker">NEXT FORM — MODERN MENSWEAR — DESIGNED FOR WHAT COMES NEXT —</div>
-      <section class="section featured-section" id="featuredSection">
-        <div class="section-head"><div><div class="eyebrow muted">Selected by NEXT FORM</div><h2>Featured pieces</h2></div><p>Our current edit. Hand-picked pieces selected for the homepage.</p></div>
+      <section class="hero nf-showroom" aria-label="NEXT FORM new season showroom">
+        <div class="nf-hero-copy">
+          <div class="nf-overline"><span></span> CONTEMPORARY MENSWEAR</div>
+          <h1>BEYOND THE<br><em>ORDINARY.</em></h1>
+          <p>Modern menswear. Distinctive identity.<br>Designed for everyday confidence.</p>
+          <div class="nf-hero-actions">
+            <a class="nf-gold-button" href="#shop">Explore Collection <b>→</b></a>
+            <a class="nf-story-button" href="#story"><span>▷</span> Watch Story</a>
+          </div>
+          <div class="nf-benefits">
+            <span><b>♧</b> Fast Delivery</span>
+            <span><b>◇</b> Secure Payment</span>
+            <span><b>⟳</b> Easy Returns</span>
+          </div>
+          <div class="nf-edition">01 — THE NEW FORM / 2026</div>
+        </div>
+
+        <div class="nf-product-showcase" id="nf3dStage" aria-label="Interactive NEXT FORM bomber jacket viewer">
+          <div class="nf-product-orbit nf-orbit-a"></div>
+          <div class="nf-product-orbit nf-orbit-b"></div>
+          <div class="nf-product-topline">NF / OBJECT 001 <span>DRAG TO ROTATE · 4 ANGLES</span></div>
+          <div class="nf-360-label"><b>360°</b><span>↻</span></div>
+          <button class="nf-rotate-arrow nf-rotate-prev" type="button" aria-label="Previous jacket angle">‹</button>
+          <div class="nf-podium"></div>
+          <div class="nf-jacket-wrap">
+            <img id="nfJacketFrame" src="/assets/nf-jacket-angle-1.webp" alt="NEXT FORM black NF bomber jacket, front view" draggable="false">
+          </div>
+          <button class="nf-rotate-arrow nf-rotate-next" type="button" aria-label="Next jacket angle">›</button>
+          <div class="nf-product-thumbs" aria-label="Jacket angles">
+            <button class="nf-angle-thumb active" type="button" data-angle="0" aria-label="Front view"><img src="/assets/nf-jacket-angle-1.webp" alt=""></button>
+            <button class="nf-angle-thumb" type="button" data-angle="1" aria-label="Three-quarter view"><img src="/assets/nf-jacket-angle-2.webp" alt=""></button>
+            <button class="nf-angle-thumb" type="button" data-angle="2" aria-label="Back view"><img src="/assets/nf-jacket-angle-3.webp" alt=""></button>
+            <button class="nf-angle-thumb" type="button" data-angle="3" aria-label="Side view"><img src="/assets/nf-jacket-angle-4.webp" alt=""></button>
+          </div>
+          <div class="nf-product-dots"><span class="active"></span><span></span><span></span></div>
+          <div class="nf-product-caption">NEXT FORM <small>OBJECT 001 / SIGNATURE BOMBER</small></div>
+        </div>
+
+        <aside class="nf-collection-panel">
+          <div class="nf-collection-heading">THE COLLECTION</div>
+          <button class="nf-collection-card" type="button" data-hero-category="Outerwear" style="--collection-image:url('/assets/nf-category-jackets.webp')">
+            <span class="nf-collection-photo"></span><span class="nf-collection-copy"><b>JACKETS</b><small>Explore <i>→</i></small></span>
+          </button>
+          <button class="nf-collection-card" type="button" data-hero-category="Hoodies" style="--collection-image:url('/assets/nf-category-hoodies.webp')">
+            <span class="nf-collection-photo"></span><span class="nf-collection-copy"><b>HOODIES</b><small>Explore <i>→</i></small></span>
+          </button>
+          <button class="nf-collection-card" type="button" data-hero-category="T-Shirts" style="--collection-image:url('/assets/nf-category-tshirts.webp')">
+            <span class="nf-collection-photo"></span><span class="nf-collection-copy"><b>T-SHIRTS</b><small>Explore <i>→</i></small></span>
+          </button>
+        </aside>
+      </section>
+      <section class="section featured-section nf-featured" id="featuredSection">
+        <div class="nf-featured-heading"><span></span><h2>FEATURED COLLECTION</h2><span></span></div>
+        <div class="nf-featured-filters" id="nfFeaturedFilters">
+          <button class="active" type="button" data-nf-category="All">All</button>
+          <button type="button" data-nf-category="Outerwear">Jackets</button>
+          <button type="button" data-nf-category="Hoodies">Hoodies</button>
+          <button type="button" data-nf-category="T-Shirts">T-Shirts</button>
+          <button type="button" data-nf-category="Shirts">Shirts</button>
+          <button type="button" data-nf-category="Trousers">Pants</button>
+        </div>
         <div class="product-grid" id="featuredGrid"></div>
+        <div class="nf-view-all"><a href="#shop">VIEW ALL PIECES <span>↗</span></a></div>
       </section>
       <section class="section" id="shop">
         <div class="section-head"><div><div class="eyebrow muted">The collection</div><h2>Latest pieces</h2></div><p>Everyday forms, thoughtfully made. Find your fit and make it your own.</p></div>
@@ -66,14 +477,14 @@
       <section class="editorial" id="story"><div class="editorial-photo" role="img" aria-label="Contemporary fashion editorial"></div><div class="editorial-copy"><div class="eyebrow">The NEXT FORM point of view</div><h2>Less noise.<br>More intention.</h2><p>We believe great style starts with the essentials. Clean lines, considered details and versatile pieces designed to move with you.</p><a class="btn btn-outline" href="#shop">Discover the collection ↗</a></div></section>
       <section class="section" style="padding-top:42px;padding-bottom:42px"><div class="benefits"><div class="benefit"><b>Thoughtful design</b><span>Everyday pieces, considered carefully.</span></div><div class="benefit"><b>Easy ordering</b><span>A simple, straightforward checkout.</span></div><div class="benefit"><b>Personal service</b><span>Questions? We are here to help.</span></div></div></section>
     </main>
-    <footer id="footer"><div class="footer-top"><div><div class="footer-brand">NEXT FORM</div><p>Contemporary menswear for a new point of view. Redefine the everyday.</p></div><div class="footer-col"><b>Explore</b><a href="#shop">Shop all</a><a href="#story">Our approach</a></div><div class="footer-col"><b>Customer care</b><span>Shipping & returns</span><span>Size guide</span><span>Contact</span></div><div class="footer-col"><b>Follow along</b><span>Instagram</span><span>Facebook</span><span>Bangladesh</span></div></div><div class="footer-bottom"><span>© <span id="year"></span> NEXT FORM. All rights reserved.</span><span>REDEFINE THE EVERYDAY.</span></div></footer>
+    <footer id="footer"><div class="footer-top"><div><div class="footer-brand">NEXT FORM</div><p>Contemporary menswear for a new point of view. Redefine the everyday.</p></div><div class="footer-col"><b>Explore</b><a href="#shop">Shop all</a><a href="#story">Our approach</a></div><div class="footer-col"><b>Customer care</b><span>Shipping & returns</span><span>Size guide</span><span>Contact</span></div><div class="footer-col"><b>Follow along</b><div class="social-links" id="socialLinks" aria-label="NEXT FORM social media"><span class="social-empty">Social links coming soon</span></div><span>Bangladesh</span></div></div><div class="footer-bottom"><span>© <span id="year"></span> NEXT FORM. All rights reserved.</span><span>REDEFINE THE EVERYDAY.</span></div></footer>
   </div>
 
   <section class="admin-screen" id="adminScreen">
     <div class="admin-top"><div style="display:flex;align-items:center;gap:12px"><span class="brand-mark" style="border-color:#fff;color:#fff">NF</span><h1>NEXT FORM / ADMIN</h1></div><button class="btn btn-light" id="backToStore">← Back to store</button></div>
     <div class="admin-wrap"><div class="admin-title"><div><div class="eyebrow muted">Store management</div><h2>Dashboard</h2><p class="admin-hint">Secure administrator area · shared product catalogue · customer orders.</p><p class="admin-hint" id="adminSignedInAs"></p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-outline" id="adminLogout" type="button">Sign out</button><button class="btn" id="exportProducts">Export products JSON ↓</button></div></div>
       <div class="stats"><div class="stat"><span>Products</span><strong id="statProducts">0</strong></div><div class="stat"><span>Featured on homepage</span><strong id="statFeatured">0</strong></div><div class="stat"><span>Orders saved here</span><strong id="statOrders">0</strong></div><div class="stat"><span>Potential sales total</span><strong id="statSales">৳0</strong></div></div>
-      <div class="admin-tabs"><button class="active" data-tab="productsTab">Products</button><button data-tab="ordersTab">Orders</button></div>
+      <div class="admin-tabs"><button class="active" data-tab="productsTab">Products</button><button data-tab="ordersTab">Orders</button><button data-tab="socialTab">Social media</button></div>
       <div id="productsTab"><div class="admin-layout"><div class="panel"><h3 id="formTitle">Add a product</h3><form id="productForm" class="admin-form">
         <input type="hidden" id="productId">
         <div><label for="pName">Product name *</label><input id="pName" required maxlength="70" placeholder="e.g. Essential Oversized Tee"></div>
@@ -89,6 +500,12 @@
         <p class="admin-hint">Choose “Feature on storefront” to show this product on the homepage. Changes are saved to the shared Supabase database.</p>
       </form></div><div class="panel"><h3>Your products</h3><div style="overflow:auto"><table class="admin-products"><thead><tr><th>Item</th><th>Price</th><th>Stock</th><th>Homepage</th><th>Actions</th></tr></thead><tbody id="adminProductRows"></tbody></table></div><p class="admin-hint" id="productTableHint"></p></div></div></div>
       <div id="ordersTab" class="hidden"><div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h3>Customer orders</h3><button class="btn btn-outline" id="exportOrders">Export orders CSV ↓</button></div><div id="ordersList"></div><p class="admin-hint">Customer orders are loaded from the shared database. Online payment status is confirmed by the gateway validation endpoint and IPN listener.</p></div></div>
+      <div id="socialTab" class="hidden"><div class="panel social-settings-panel"><h3>Social media profiles</h3><p class="admin-hint">Add your official profile links. They will appear in the storefront footer after saving and are stored in Supabase.</p><form id="socialLinksForm" class="admin-form social-settings-form">
+        <div><label for="socialFacebook">Facebook Page URL</label><input id="socialFacebook" type="url" inputmode="url" placeholder="https://www.facebook.com/yourpage"></div>
+        <div><label for="socialInstagram">Instagram Profile URL</label><input id="socialInstagram" type="url" inputmode="url" placeholder="https://www.instagram.com/yourprofile"></div>
+        <div><label for="socialTiktok">TikTok Profile URL</label><input id="socialTiktok" type="url" inputmode="url" placeholder="https://www.tiktok.com/@yourprofile"></div>
+        <button class="btn" id="saveSocialLinks" type="submit">Save social links</button><p class="admin-hint">Leave a field blank to hide that social profile from the storefront.</p>
+      </form></div></div>
     </div>
   </section>
 
@@ -121,7 +538,60 @@
     function renderFeaturedProducts(){const featured=products.filter(p=>p.featured===true&&p.stock>0).sort((a,b)=>(b.created||0)-(a.created||0));const section=document.getElementById('featuredSection'),grid=document.getElementById('featuredGrid');section.classList.toggle('hidden',featured.length===0);grid.innerHTML=featured.length?featured.map(productCard).join(''):''}
     function renderProducts(){const q=document.getElementById('searchInput').value.trim().toLowerCase(),sort=document.getElementById('sortSelect').value;let list=products.filter(p=>(activeCategory==='All'||p.category===activeCategory)&&(!q||(p.name+' '+p.category+' '+p.description).toLowerCase().includes(q)));if(sort==='low')list.sort((a,b)=>a.price-b.price);if(sort==='high')list.sort((a,b)=>b.price-a.price);if(sort==='new')list.sort((a,b)=>(b.created||0)-(a.created||0));if(sort==='featured')list.sort((a,b)=>(b.featured===true)-(a.featured===true));const grid=document.getElementById('productGrid');grid.innerHTML=list.length?list.map(productCard).join(''):'<div class="empty-state">No pieces found. Try another search or category.</div>';renderFeaturedProducts();}
     function setCategory(cat){activeCategory=cat;document.querySelectorAll('.filter').forEach(b=>b.classList.toggle('active',b.dataset.category===cat));renderProducts()}
-    function openProduct(id){const p=products.find(x=>x.id===id);if(!p)return;selectedProductSize[id]=selectedProductSize[id]||p.sizes?.[0]||'One size';document.getElementById('productModalContent').innerHTML=`<div class="product-detail"><div class="detail-image"><img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}"></div><div class="detail-copy"><div class="eyebrow muted">${escapeHtml(p.category)}</div><h2>${escapeHtml(p.name)}</h2><div class="detail-price">${money(p.price)} ${p.oldPrice>p.price?`<span class="old-price">${money(p.oldPrice)}</span>`:''}</div><p>${escapeHtml(p.description)}</p><div class="muted" style="font-size:10px;margin-top:16px">${p.color?`Colour: ${escapeHtml(p.color)} · `:''}${p.stock>0?`${p.stock} available`:'Currently unavailable'}</div><span class="field-label">Select size</span><div class="size-options">${(p.sizes?.length?p.sizes:['One size']).map(s=>`<button class="size-option ${selectedProductSize[id]===s?'selected':''}" data-size="${escapeHtml(s)}" data-product="${escapeHtml(id)}">${escapeHtml(s)}</button>`).join('')}</div><button class="btn full" style="margin-top:24px" id="detailAdd" ${p.stock<=0?'disabled':''}>${p.stock>0?'Add to bag':'Sold out'}</button><button class="btn btn-outline full" style="margin-top:9px" id="detailBuy" ${p.stock<=0?'disabled':''}>Buy now →</button><p class="checkout-note" style="margin-top:13px">Product photos are illustrative. Actual colour and fit may vary slightly.</p></div></div>`;showModal('productModal');document.getElementById('detailAdd')?.addEventListener('click',()=>{if(addToCart(id,selectedProductSize[id])){closeModal('productModal');openCart()}});document.getElementById('detailBuy')?.addEventListener('click',()=>{if(addToCart(id,selectedProductSize[id])){closeModal('productModal');startCheckout()}})}
+    function openProduct(id){
+      const p=products.find(x=>x.id===id);if(!p)return;
+      selectedProductSize[id]=selectedProductSize[id]||p.sizes?.[0]||'One size';
+      document.getElementById('productModalContent').innerHTML=`
+        <div class="product-detail">
+          <div class="detail-image" id="nfProductViewer" aria-label="Interactive product preview">
+            <div class="viewer-topline"><span class="viewer-chip">NEXT FORM · OBJECT STUDY</span><span class="viewer-chip">01 / 01</span></div>
+            <img class="viewer-image" id="nfViewerImage" src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)} — interactive product preview" draggable="false">
+            <div class="viewer-hint"><span class="hint-orbit">↻</span> Drag to explore · 3D-style view</div>
+            <div class="viewer-controls">
+              <button class="viewer-control" type="button" data-viewer="left" aria-label="Rotate left">↶</button>
+              <button class="viewer-control" type="button" data-viewer="right" aria-label="Rotate right">↷</button>
+              <button class="viewer-control" type="button" data-viewer="reset" aria-label="Reset view">⌂</button>
+              <button class="viewer-control" type="button" data-viewer="auto" aria-label="Toggle motion" aria-pressed="false">▶</button>
+            </div>
+          </div>
+          <div class="detail-copy">
+            <div class="eyebrow muted">${escapeHtml(p.category)}</div>
+            <h2>${escapeHtml(p.name)}</h2>
+            <div class="detail-price">${money(p.price)} ${p.oldPrice>p.price?`<span class="old-price">${money(p.oldPrice)}</span>`:''}</div>
+            <p>${escapeHtml(p.description)}</p>
+            <div class="muted" style="font-size:10px;margin-top:16px">${p.color?`Colour: ${escapeHtml(p.color)} · `:''}${p.stock>0?`${p.stock} available`:'Currently unavailable'}</div>
+            <span class="field-label">Select size</span>
+            <div class="size-options">${(p.sizes?.length?p.sizes:['One size']).map(s=>`<button class="size-option ${selectedProductSize[id]===s?'selected':''}" data-size="${escapeHtml(s)}" data-product="${escapeHtml(id)}">${escapeHtml(s)}</button>`).join('')}</div>
+            <button class="btn full" style="margin-top:24px" id="detailAdd" ${p.stock<=0?'disabled':''}>${p.stock>0?'Add to bag':'Sold out'}</button>
+            <button class="btn btn-outline full" style="margin-top:9px" id="detailBuy" ${p.stock<=0?'disabled':''}>Buy now →</button>
+            <p class="checkout-note" style="margin-top:13px">Interactive 3D-style preview uses the product photo. Full 360° geometry requires a dedicated 3D model or multiple product-view images.</p>
+          </div>
+        </div>`;
+      showModal('productModal');
+      nfInitProductViewer();
+      document.getElementById('detailAdd')?.addEventListener('click',()=>{if(addToCart(id,selectedProductSize[id])){closeModal('productModal');openCart()}});
+      document.getElementById('detailBuy')?.addEventListener('click',()=>{if(addToCart(id,selectedProductSize[id])){closeModal('productModal');startCheckout()}});
+    }
+    function nfInitProductViewer(){
+      const stage=document.getElementById('nfProductViewer'),img=document.getElementById('nfViewerImage');
+      if(!stage||!img)return;
+      let rx=0,ry=0,drag=false,startX=0,startY=0,baseX=0,baseY=0,auto=false;
+      const paint=()=>{img.style.setProperty('--rx',`${rx}deg`);img.style.setProperty('--ry',`${ry}deg`);};
+      const stopAuto=()=>{auto=false;stage.classList.remove('auto-spin');stage.querySelector('[data-viewer="auto"]')?.setAttribute('aria-pressed','false');};
+      const pointerDown=e=>{if(e.target.closest('button'))return;drag=true;stopAuto();startX=e.clientX;startY=e.clientY;baseX=ry;baseY=rx;stage.classList.add('is-dragging');img.setPointerCapture?.(e.pointerId);};
+      const pointerMove=e=>{if(!drag)return;ry=Math.max(-48,Math.min(48,baseX+(e.clientX-startX)*.48));rx=Math.max(-24,Math.min(24,baseY-(e.clientY-startY)*.32));paint();};
+      const pointerUp=()=>{drag=false;stage.classList.remove('is-dragging');};
+      stage.addEventListener('pointerdown',pointerDown);stage.addEventListener('pointermove',pointerMove);stage.addEventListener('pointerup',pointerUp);stage.addEventListener('pointercancel',pointerUp);stage.addEventListener('lostpointercapture',pointerUp);
+      stage.addEventListener('click',e=>{
+        const b=e.target.closest('[data-viewer]');if(!b)return;
+        const action=b.dataset.viewer;
+        if(action==='left'){stopAuto();ry=Math.max(-48,ry-18);paint();}
+        if(action==='right'){stopAuto();ry=Math.min(48,ry+18);paint();}
+        if(action==='reset'){stopAuto();rx=0;ry=0;paint();}
+        if(action==='auto'){auto=!auto;stage.classList.toggle('auto-spin',auto);b.setAttribute('aria-pressed',String(auto));}
+      });
+      stage.addEventListener('wheel',e=>{if(Math.abs(e.deltaY)<2)return;e.preventDefault();stopAuto();ry=Math.max(-48,Math.min(48,ry+(e.deltaY>0?4:-4)));paint();},{passive:false});
+    }
     function showModal(id){document.getElementById(id).classList.add('show')}function closeModal(id){document.getElementById(id).classList.remove('show')}
     function addToCart(id,size){const p=products.find(x=>x.id===id);if(!p||p.stock<=0)return false;const existing=cart.find(x=>x.id===id&&x.size===size);if(existing){if(existing.qty>=p.stock){toast('No more stock available');return false}existing.qty++}else cart.push({id,size,qty:1});write(KEY_CART,cart);renderCartCount();toast('Added to your bag');return true}
     function renderCartCount(){document.getElementById('cartCount').textContent=cart.reduce((n,x)=>n+x.qty,0)}
@@ -180,7 +650,7 @@
         </div>`;
       showModal('orderDetailsModal');
     });
-    document.querySelectorAll('.admin-tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.admin-tabs button').forEach(x=>x.classList.toggle('active',x===b));document.getElementById('productsTab').classList.toggle('hidden',b.dataset.tab!=='productsTab');document.getElementById('ordersTab').classList.toggle('hidden',b.dataset.tab!=='ordersTab')});
+    document.querySelectorAll('.admin-tabs button').forEach(b=>b.onclick=async()=>{document.querySelectorAll('.admin-tabs button').forEach(x=>x.classList.toggle('active',x===b));['productsTab','ordersTab','socialTab'].forEach(id=>document.getElementById(id).classList.toggle('hidden',b.dataset.tab!==id));if(b.dataset.tab==='socialTab'){try{await nfLoadAdminSocialLinks()}catch(err){toast(err.message)}}});
     document.getElementById('exportProducts').onclick=()=>download('next-form-products.json',JSON.stringify(products,null,2),'application/json');document.getElementById('exportOrders').onclick=()=>{const rows=[['Order ID','Date','Name','Phone','Email','Address','City','Payment','Items','Total'],...orders.map(o=>[o.id,o.created,o.customer.name,o.customer.phone,o.customer.email,o.customer.address,o.customer.city,o.customer.payment,o.items.map(i=>`${i.name} (${i.size}) x${i.qty}`).join('; '),o.total])];download('next-form-orders.csv',rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n'),'text/csv')};function download(name,data,type){const blob=new Blob([data],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();URL.revokeObjectURL(url)}
     // ---- NEXT FORM live backend integration (Supabase + SSLCOMMERZ + WhatsApp) ----
     let nfConfig=null, nfAdminToken=sessionStorage.getItem('nf_admin_access')||'', nfRefreshToken=sessionStorage.getItem('nf_admin_refresh')||'';
@@ -202,6 +672,32 @@
       return `https://wa.me/${nfConfig.whatsappPhone}?text=${encodeURIComponent(message)}`;
     }
     function nfUpdateWhatsApp(){const link=document.getElementById('whatsappContact'),url=nfWhatsAppUrl();link.href=url||'#';link.onclick=(e)=>{if(!url){e.preventDefault();toast('WhatsApp is not configured yet. Add your business number to WHATSAPP_PHONE in .env.')}};const successLink=document.getElementById('successWhatsapp');successLink.href=url||'#';successLink.onclick=(e)=>{if(!url){e.preventDefault();toast('WhatsApp contact number has not been configured yet.')}}}
+
+    const socialLabels={facebook:'Facebook',instagram:'Instagram',tiktok:'TikTok'};
+    function nfRenderSocialLinks(links={}){
+      const host=document.getElementById('socialLinks');if(!host)return;
+      const entries=Object.entries(socialLabels).filter(([key])=>links[key]);
+      host.innerHTML=entries.length?entries.map(([key,label])=>`<a class="social-link" href="${escapeHtml(links[key])}" target="_blank" rel="noopener noreferrer" aria-label="${label}" title="${label}"><span>${key==='instagram'?'◎':key==='tiktok'?'♪':'f'}</span><em>${label}</em></a>`).join(''):'<span class="social-empty">Social links coming soon</span>';
+    }
+    async function nfLoadPublicSocialLinks(){
+      try{const response=await fetch('/api/social-links');if(!response.ok)throw new Error('Could not load social links');nfRenderSocialLinks(await response.json())}
+      catch(error){console.warn('Social links unavailable:',error.message);nfRenderSocialLinks({})}
+    }
+    async function nfLoadAdminSocialLinks(){
+      const links=await nfApi('/api/admin/social-links');
+      document.getElementById('socialFacebook').value=links.facebook||'';
+      document.getElementById('socialInstagram').value=links.instagram||'';
+      document.getElementById('socialTiktok').value=links.tiktok||'';
+    }
+    document.getElementById('socialLinksForm').addEventListener('submit',async event=>{
+      event.preventDefault();const button=document.getElementById('saveSocialLinks');button.disabled=true;button.textContent='Saving…';
+      try{
+        const links={facebook:document.getElementById('socialFacebook').value.trim(),instagram:document.getElementById('socialInstagram').value.trim(),tiktok:document.getElementById('socialTiktok').value.trim()};
+        const saved=await nfApi('/api/admin/social-links',{method:'PUT',body:JSON.stringify(links)});
+        nfRenderSocialLinks(saved);toast('Social media links saved successfully');
+      }catch(error){toast(error.message)}
+      finally{button.disabled=false;button.textContent='Save social links'}
+    });
     async function nfLoadProducts(){const response=await fetch('/api/products');if(!response.ok)throw new Error('Product API is not ready.');products=await response.json();renderProducts();}
     async function nfLoadAdminData(){
       orders=await nfApi('/api/admin/orders');
@@ -267,7 +763,7 @@
     },true);
     async function nfInitialize(){
       try{
-        const response=await fetch('/api/config');if(!response.ok)throw new Error('API unavailable');nfConfig=await response.json();nfUpdateWhatsApp();
+        const response=await fetch('/api/config');if(!response.ok)throw new Error('API unavailable');nfConfig=await response.json();nfUpdateWhatsApp();await nfLoadPublicSocialLinks();
         const onlineOption=document.querySelector('#buyerPayment option[value="sslcommerz"]');if(onlineOption&&!nfConfig.onlinePaymentConfigured){onlineOption.disabled=true;onlineOption.textContent='Online payment (being configured)';document.getElementById('buyerPayment').value='cod';}
         if(nfConfig.backendReady){await nfLoadProducts();}
         else{toast('Backend setup is still required before live orders and admin sign-in can work.');}
@@ -325,8 +821,155 @@
       });
     })();
 
+
+    // Subtle scroll reveal for visual sections; commerce interactions remain untouched.
+    (function nfEnableReveal(){
+      if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
+      const targets=document.querySelectorAll('.section-head,.product-card,.editorial-copy,.benefit,.footer-col');
+      if(!('IntersectionObserver' in window))return;
+      document.body.classList.add('reveal-ready');
+      targets.forEach(el=>el.classList.add('reveal-item'));
+      const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
+        if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target)}
+      }),{threshold:.08});
+      targets.forEach(el=>observer.observe(el));
+      const originalRender=window.renderProducts;
+    })();
+
     nfInitialize();
     document.getElementById('year').textContent=new Date().getFullYear();renderProducts();renderCartCount();
+
+    // V3 motion enhancements: lightweight, accessible and independent of store logic.
+    (function nfMotionV3(){
+      const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const coarse=window.matchMedia('(pointer: coarse)').matches;
+      if(reduce)return;
+      const revealSelectors='.section-head,.product-card,.story-section,.newsletter,.footer-main';
+      const reveal=new IntersectionObserver(entries=>entries.forEach(entry=>{
+        if(entry.isIntersecting){entry.target.classList.add('is-visible');reveal.unobserve(entry.target)}
+      }),{threshold:.1,rootMargin:'0px 0px -35px 0px'});
+      const seen=new WeakSet();
+      function observe(root=document){root.querySelectorAll(revealSelectors).forEach(el=>{
+        if(seen.has(el))return;seen.add(el);el.classList.add('reveal-item');reveal.observe(el);
+      });}
+      observe();
+      const gridObserver=new MutationObserver(()=>observe());
+      ['featuredGrid','productGrid','latestGrid'].forEach(id=>{const el=document.getElementById(id);if(el)gridObserver.observe(el,{childList:true,subtree:true})});
+      if(!coarse){
+        document.addEventListener('pointermove',event=>{
+          const card=event.target.closest('.product-card');
+          if(!card)return;
+          const rect=card.getBoundingClientRect();
+          const x=(event.clientX-rect.left)/rect.width-.5;
+          const y=(event.clientY-rect.top)/rect.height-.5;
+          card.style.transform=`perspective(900px) rotateX(${(-y*4).toFixed(2)}deg) rotateY(${(x*5).toFixed(2)}deg) translateY(-5px)`;
+        },{passive:true});
+        document.addEventListener('pointerout',event=>{
+          const card=event.target.closest('.product-card');
+          if(card&&!card.contains(event.relatedTarget))card.style.transform='';
+        },{passive:true});
+      }
+      const header=document.querySelector('header');
+      let ticking=false;
+      window.addEventListener('scroll',()=>{
+        if(ticking)return;ticking=true;
+        requestAnimationFrame(()=>{if(header)header.classList.toggle('is-scrolled',window.scrollY>24);ticking=false});
+      },{passive:true});
+    })();
+
   </script>
+
+<script>
+(()=>{
+ const init=()=>{
+  const targets=document.querySelectorAll('.section,.editorial,.ticker,.product-card,.featured-section');
+  targets.forEach((el)=>{if(el.classList.contains('nf-reveal'))return;el.classList.add('nf-reveal')});
+  if(!('IntersectionObserver' in window)){targets.forEach(el=>el.classList.add('nf-visible'));return}
+  const io=new IntersectionObserver((entries,observer)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('nf-visible');observer.unobserve(entry.target)}})},{threshold:.12,rootMargin:'0px 0px -45px 0px'});
+  targets.forEach(el=>io.observe(el));
+ };
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+ const gridObserver=new MutationObserver(()=>{document.querySelectorAll('.product-card:not(.nf-reveal)').forEach(el=>{el.classList.add('nf-reveal');if(!('IntersectionObserver' in window)||el.getBoundingClientRect().top<innerHeight){el.classList.add('nf-visible')}else{const obs=new IntersectionObserver((entries,o)=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('nf-visible');o.unobserve(e.target)}}),{threshold:.08});obs.observe(el)}})});
+ gridObserver.observe(document.body,{childList:true,subtree:true});
+})();
+</script>
+
+
+<script>
+(()=>{
+ const init=()=>{
+  const stage=document.getElementById('nf3dStage');
+  const image=document.getElementById('nfJacketFrame');
+  if(stage&&image){
+   const frames=[
+    '/assets/nf-jacket-angle-1.webp',
+    '/assets/nf-jacket-angle-2.webp',
+    '/assets/nf-jacket-angle-3.webp',
+    '/assets/nf-jacket-angle-4.webp'
+   ];
+   let current=0,startX=0,dragging=false,lastStep=0,autoTimer=null,pausedUntil=0;
+   const thumbs=[...stage.querySelectorAll('.nf-angle-thumb')];
+   const dots=[...stage.querySelectorAll('.nf-product-dots span')];
+   const show=(index)=>{
+    current=(index+frames.length)%frames.length;
+    image.classList.add('nf-changing');
+    window.setTimeout(()=>{
+     image.src=frames[current];
+     image.alt=['front','three-quarter front','back','side'][current]+' view of NEXT FORM NF bomber jacket';
+     image.onload=()=>image.classList.remove('nf-changing');
+     window.setTimeout(()=>image.classList.remove('nf-changing'),260);
+    },90);
+    thumbs.forEach((b,i)=>b.classList.toggle('active',i===current));
+    dots.forEach((d,i)=>d.classList.toggle('active',i===current%3));
+   };
+   const pauseAuto=()=>{pausedUntil=Date.now()+9000};
+   thumbs.forEach((b)=>b.addEventListener('click',()=>{pauseAuto();show(Number(b.dataset.angle))}));
+   stage.querySelector('.nf-rotate-prev')?.addEventListener('click',e=>{e.stopPropagation();pauseAuto();show(current-1)});
+   stage.querySelector('.nf-rotate-next')?.addEventListener('click',e=>{e.stopPropagation();pauseAuto();show(current+1)});
+   stage.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    dragging=true;startX=e.clientX;lastStep=0;stage.classList.add('is-dragging');
+    stage.setPointerCapture?.(e.pointerId);pauseAuto();
+   });
+   stage.addEventListener('pointermove',e=>{
+    if(!dragging)return;
+    const delta=e.clientX-startX;
+    const step=Math.trunc(delta/48);
+    if(step!==lastStep){show(current-(step-lastStep));lastStep=step}
+   });
+   const endDrag=()=>{dragging=false;stage.classList.remove('is-dragging')};
+   stage.addEventListener('pointerup',endDrag);
+   stage.addEventListener('pointercancel',endDrag);
+   stage.addEventListener('lostpointercapture',endDrag);
+   autoTimer=window.setInterval(()=>{
+    if(!dragging&&Date.now()>pausedUntil&&document.visibilityState==='visible')show(current+1);
+   },2600);
+   show(0);
+  }
+  document.querySelectorAll('[data-hero-category]').forEach(card=>{
+   card.addEventListener('click',()=>{
+    const category=card.dataset.heroCategory;
+    const filter=document.querySelector(`#filters [data-category="${CSS.escape(category)}"]`);
+    if(filter){filter.click();document.getElementById('shop')?.scrollIntoView({behavior:'smooth',block:'start'})}
+   });
+  });
+  document.querySelectorAll('[data-nf-category]').forEach(button=>{
+   button.addEventListener('click',()=>{
+    const cat=button.dataset.nfCategory;
+    document.querySelectorAll('[data-nf-category]').forEach(b=>b.classList.toggle('active',b===button));
+    const target=document.querySelector(`#filters [data-category="${CSS.escape(cat)}"]`);
+    if(target){target.click();document.getElementById('shop')?.scrollIntoView({behavior:'smooth',block:'start'})}
+   });
+  });
+  document.getElementById('searchOpen')?.addEventListener('click',()=>{
+   document.getElementById('shop')?.scrollIntoView({behavior:'smooth',block:'start'});
+   window.setTimeout(()=>document.getElementById('searchInput')?.focus(),500);
+  });
+  document.getElementById('accountOpen')?.addEventListener('click',()=>document.getElementById('adminOpen')?.click());
+ };
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
 </body>
 </html>
