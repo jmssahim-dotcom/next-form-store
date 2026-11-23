@@ -47,6 +47,32 @@ function mapProduct(row) {
   };
 }
 
+const SOCIAL_PROFILE_HOSTS = {
+  facebook: new Set(['facebook.com', 'www.facebook.com', 'm.facebook.com']),
+  instagram: new Set(['instagram.com', 'www.instagram.com']),
+  tiktok: new Set(['tiktok.com', 'www.tiktok.com'])
+};
+
+function validateSocialLinks(input) {
+  const links = {};
+  for (const platform of Object.keys(SOCIAL_PROFILE_HOSTS)) {
+    const value = typeof input?.[platform] === 'string' ? input[platform].trim() : '';
+    if (value.length > 2048) return { error: 'Social profile URLs must be 2048 characters or less.' };
+    if (!value) {
+      links[platform] = '';
+      continue;
+    }
+
+    let url;
+    try { url = new URL(value); } catch { return { error: `Enter a valid ${platform} profile URL.` }; }
+    if (url.protocol !== 'https:' || !SOCIAL_PROFILE_HOSTS[platform].has(url.hostname.toLowerCase()) || url.username || url.password) {
+      return { error: `Enter a valid HTTPS ${platform} profile URL.` };
+    }
+    links[platform] = url.toString();
+  }
+  return { links };
+}
+
 function getBearer(req) {
   const value = req.headers.authorization || '';
   return value.startsWith('Bearer ') ? value.slice(7) : '';
@@ -158,6 +184,37 @@ app.post('/api/admin/upload', requireAdmin, imageUpload.single('image'), async (
 });
 
 app.get('/api/admin/me', requireAdmin, (req, res) => res.json({ id: req.adminUser.id, email: req.adminUser.email }));
+
+async function readSocialLinks(res) {
+  const { data, error } = await supabase.from('store_social_links')
+    .select('facebook,instagram,tiktok')
+    .eq('id', true)
+    .maybeSingle();
+  if (error) {
+    console.error('Social links read:', error.message);
+    return res.status(500).json({ error: 'Could not load social links. Apply the social links database migration.' });
+  }
+  res.json({ facebook: data?.facebook || '', instagram: data?.instagram || '', tiktok: data?.tiktok || '' });
+}
+
+app.get('/api/social-links', requireDatabase, async (_req, res) => readSocialLinks(res));
+app.get('/api/admin/social-links', requireAdmin, async (_req, res) => readSocialLinks(res));
+
+app.put('/api/admin/social-links', requireAdmin, async (req, res) => {
+  const validated = validateSocialLinks(req.body);
+  if (validated.error) return res.status(400).json({ error: validated.error });
+
+  const { data, error } = await supabase.from('store_social_links').upsert({
+    id: true,
+    ...validated.links,
+    updated_at: new Date().toISOString()
+  }).select('facebook,instagram,tiktok').single();
+  if (error) {
+    console.error('Social links save:', error.message);
+    return res.status(500).json({ error: 'Could not save social links. Apply the social links database migration.' });
+  }
+  res.json({ facebook: data.facebook || '', instagram: data.instagram || '', tiktok: data.tiktok || '' });
+});
 
 app.get('/api/admin/orders', requireAdmin, async (_req, res) => {
   const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false }).limit(300);
