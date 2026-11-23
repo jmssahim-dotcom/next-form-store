@@ -42,7 +42,7 @@ function requireDatabase(req, res, next) {
 function mapProduct(row) {
   return {
     id: row.id, name: row.name, category: row.category, price: Number(row.price), oldPrice: Number(row.old_price || 0),
-    stock: Number(row.stock || 0), sizes: row.sizes || [], image: row.image_url, description: row.description || '',
+    stock: Number(row.stock || 0), sizes: row.sizes || [], image: row.image_url, imageNoModel: row.image_url_no_model || '', description: row.description || '',
     color: row.color || '', featured: Boolean(row.featured), created: new Date(row.created_at).getTime()
   };
 }
@@ -231,14 +231,16 @@ app.post('/api/admin/products', requireAdmin, async (req, res) => {
   const p = req.body || {};
   let imageUrl;
   try { imageUrl = new URL(String(p.image || '')); } catch { imageUrl = null; }
-  if (!p.name || !p.category || !imageUrl || imageUrl.protocol !== 'https:' || !Number.isFinite(Number(p.price)) || Number(p.price) < 1 || !Number.isInteger(Number(p.stock)) || Number(p.stock) < 0) {
-    return res.status(400).json({ error: 'Name, category, image, valid price and stock are required.' });
+  let imageNoModelUrl;
+  try { imageNoModelUrl = new URL(String(p.imageNoModel || '')); } catch { imageNoModelUrl = null; }
+  if (!p.name || !p.category || !imageUrl || imageUrl.protocol !== 'https:' || !imageNoModelUrl || imageNoModelUrl.protocol !== 'https:' || !Number.isFinite(Number(p.price)) || Number(p.price) < 1 || !Number.isInteger(Number(p.stock)) || Number(p.stock) < 0) {
+    return res.status(400).json({ error: 'Name, category, model photo, product-only photo, valid price and stock are required.' });
   }
   const row = {
     ...(p.id ? { id: p.id } : {}), name: String(p.name).trim().slice(0, 120), category: String(p.category).slice(0, 60),
     price: Math.round(Number(p.price)), old_price: Math.max(0, Math.round(Number(p.oldPrice || 0))),
     stock: Number(p.stock), sizes: Array.isArray(p.sizes) ? p.sizes.map(String).slice(0, 20) : [],
-    image_url: imageUrl.toString(), description: String(p.description || '').slice(0, 3000), color: String(p.color || '').slice(0, 120),
+    image_url: imageUrl.toString(), image_url_no_model: imageNoModelUrl.toString(), description: String(p.description || '').slice(0, 3000), color: String(p.color || '').slice(0, 120),
     featured: Boolean(p.featured), is_active: true
   };
   const { data, error } = await supabase.from('products').upsert(row).select('*').single();
