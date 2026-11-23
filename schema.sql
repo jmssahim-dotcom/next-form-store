@@ -44,6 +44,14 @@ create table if not exists public.orders (
   updated_at timestamptz not null default now()
 );
 
+create table if not exists public.store_social_links (
+  id boolean primary key default true check (id),
+  facebook text not null default '',
+  instagram text not null default '',
+  tiktok text not null default '',
+  updated_at timestamptz not null default now()
+);
+
 create index if not exists products_active_featured_idx on public.products (is_active, featured);
 create index if not exists orders_created_at_idx on public.orders (created_at desc);
 create index if not exists orders_transaction_id_idx on public.orders (transaction_id);
@@ -53,6 +61,7 @@ create index if not exists orders_transaction_id_idx on public.orders (transacti
 alter table public.admin_users enable row level security;
 alter table public.products enable row level security;
 alter table public.orders enable row level security;
+alter table public.store_social_links enable row level security;
 
 create or replace function public.is_nf_admin()
 returns boolean
@@ -89,9 +98,16 @@ create policy "no customer order reads from browser" on public.orders
 revoke all on public.admin_users from anon, authenticated;
 revoke all on public.products from anon, authenticated;
 revoke all on public.orders from anon, authenticated;
+revoke all on public.store_social_links from anon, authenticated;
 grant select on public.admin_users to authenticated;
 grant select, insert, update, delete on public.products to authenticated;
 grant select on public.orders to authenticated;
+grant all on public.store_social_links to service_role;
+
+-- Seed the public profiles shown in the NEXT FORM admin form screenshot.
+insert into public.store_social_links (id, facebook, instagram, tiktok)
+values (true, 'https://www.facebook.com/1460494087150407?locale=en_US', 'https://www.instagram.com/next_form.official', '')
+on conflict (id) do nothing;
 
 -- Public bucket for product images; upload and delete are admin-only.
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)

@@ -24,8 +24,9 @@
 
 1. Supabase Dashboard-এ একটি project তৈরি করুন।
 2. SQL Editor খুলুন।
-3. `supabase/schema.sql` ফাইলের সম্পূর্ণ SQL paste করে Run করুন।
+3. repository root-এর `schema.sql` ফাইলের সম্পূর্ণ SQL paste করে Run করুন।
 4. এতে `products`, `orders`, `admin_users`, `product-images` Storage bucket এবং stock/payment functions তৈরি হবে। চারটি demo product-ও যোগ হবে যদি catalogue খালি থাকে।
+5. আগে থেকে চালু থাকা database-এ social profile save চালু করতে `social-links-migration.sql` একবার SQL Editor-এ চালান। নতুন setup-এ মূল schema-র পর এটিও চালান।
 
 ## ৩) Admin account তৈরি ও অনুমতি দেওয়া
 
