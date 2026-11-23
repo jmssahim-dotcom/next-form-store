@@ -17,6 +17,7 @@ create table if not exists public.products (
   stock integer not null default 0 check (stock >= 0),
   sizes text[] not null default '{}',
   image_url text not null,
+  image_url_no_model text not null default '',
   description text not null default '',
   color text not null default '',
   featured boolean not null default false,
@@ -24,6 +25,9 @@ create table if not exists public.products (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.products
+  add column if not exists image_url_no_model text not null default '';
 
 create table if not exists public.orders (
   id uuid primary key default gen_random_uuid(),
