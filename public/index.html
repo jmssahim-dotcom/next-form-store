@@ -299,6 +299,11 @@ body{background:var(--nf-cream);color:#121212}
 .nf-product-topline span{color:rgba(240,231,217,.56);font-size:7px}
 .nf-jacket-wrap{position:relative;z-index:3;width:86%;height:78%;display:grid;place-items:center;perspective:1200px;transform-style:preserve-3d}
 #nfJacketFrame{width:100%;height:100%;object-fit:contain;mix-blend-mode:normal;filter:drop-shadow(0 32px 25px rgba(0,0,0,.2));user-select:none;-webkit-user-drag:none;pointer-events:none}
+.nf-3d-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y}
+.nf-model-control{position:absolute;left:50%;top:14%;transform:translateX(-50%);z-index:8;border:1px solid rgba(166,126,58,.45);border-radius:99px;background:rgba(255,251,243,.82);color:#263a27;padding:7px 12px;font-size:9px;letter-spacing:.1em;white-space:nowrap;cursor:grab}
+.nf-model-control:active{cursor:grabbing}
+.nf-model-upload{display:grid;gap:9px;padding:14px;border:1px dashed #bdb39f;background:#faf7f0}
+.nf-model-upload input{max-width:100%}
 .nf-podium{position:absolute;z-index:2;bottom:8%;left:9%;right:9%;height:34px;border-radius:50%;background:linear-gradient(180deg,#272727,#080808 52%,#171411);border:1px solid rgba(221,194,150,.65);box-shadow:0 8px 0 #050505,0 11px 28px rgba(0,0,0,.75),0 0 22px rgba(203,163,97,.34)}
 .nf-podium:after{content:"";position:absolute;left:3%;right:3%;bottom:-8px;height:5px;border-radius:50%;background:#d5ad6b;filter:blur(7px)}
 .nf-product-caption{position:absolute;bottom:7%;left:50%;transform:translateX(-50%);z-index:5;white-space:nowrap;color:#e2d5bd;font-size:9px;letter-spacing:.22em}
@@ -496,9 +501,11 @@ body{background:#f5efe4;color:#203421}
           <div class="nf-product-orbit nf-orbit-a"></div>
           <div class="nf-product-orbit nf-orbit-b"></div>
           <div class="nf-product-topline">NF / FEATURED PRODUCT <span id="nfHeroProductHint">CHOOSE IN ADMIN</span></div>
+          <div class="nf-model-control" aria-hidden="true">360° · DRAG TO ROTATE</div>
           <div class="nf-podium"></div>
           <div class="nf-jacket-wrap">
             <img id="nfJacketFrame" src="/assets/nf-jacket-angle-1.webp" alt="NEXT FORM featured product" draggable="false">
+            <canvas id="nf3dCanvas" class="nf-3d-canvas" aria-label="Rotate the NEXT FORM 3D garment with your pointer"></canvas>
           </div>
           <div class="nf-product-caption" id="nfProductCaption">NEXT FORM <small>FEATURED PRODUCT</small></div>
         </div>
@@ -563,7 +570,7 @@ body{background:#f5efe4;color:#203421}
         <button class="btn full" type="submit" id="saveProduct">Save product</button><button class="btn btn-outline full hidden" type="button" id="cancelEdit">Cancel editing</button>
         <p class="admin-hint">Choose “Feature on storefront” to show this product on the homepage. Changes are saved to the shared Supabase database.</p>
       </form></div><div class="panel"><h3>Your products</h3><div style="overflow:auto"><table class="admin-products"><thead><tr><th>Item</th><th>Price</th><th>Stock</th><th>Homepage</th><th>Actions</th></tr></thead><tbody id="adminProductRows"></tbody></table></div><p class="admin-hint" id="productTableHint"></p></div></div></div>
-      <div id="showroomTab" class="hidden"><div class="panel" style="max-width:760px"><h3>Homepage showroom product</h3><p class="admin-hint">Choose the product shown in the large homepage display. Change the product photos in Products first; this setting is saved for every visitor.</p><form id="heroProductForm" class="admin-form"><div><label for="heroProductSelect">Show this product</label><select id="heroProductSelect"><option value="">Use the newest featured product</option></select></div><div id="heroProductPreview" class="admin-hint"></div><button class="btn" id="saveHeroProduct" type="submit">Save homepage product</button></form></div></div>
+      <div id="showroomTab" class="hidden"><div class="panel" style="max-width:760px"><h3>Homepage 3D showroom</h3><p class="admin-hint">Choose the featured product and upload its 3D garment model. The homepage model rotates automatically; visitors can also drag it to turn it.</p><form id="heroProductForm" class="admin-form"><div><label for="heroProductSelect">Featured product</label><select id="heroProductSelect"><option value="">Use the newest featured product</option></select></div><div class="nf-model-upload"><label for="heroModelUpload">3D garment model (.glb, maximum 20 MB)</label><input id="heroModelUpload" type="file" accept=".glb,model/gltf-binary,application/octet-stream"><small id="heroModelStatus">The built-in NEXT FORM shirt model will appear until you upload a GLB file.</small></div><div id="heroProductPreview" class="admin-hint"></div><button class="btn" id="saveHeroProduct" type="submit">Save homepage 3D model</button></form></div></div>
       <div id="ordersTab" class="hidden"><div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h3>Customer orders</h3><button class="btn btn-outline" id="exportOrders">Export orders CSV ↓</button></div><div id="ordersList"></div><p class="admin-hint">Customer orders are loaded from the shared database. Online payment status is confirmed by the gateway validation endpoint and IPN listener.</p></div></div>
       <div id="socialTab" class="hidden"><div class="panel social-settings-panel"><h3>Social media profiles</h3><p class="admin-hint">Add your official profile links. They will appear in the storefront footer after saving and are stored in Supabase.</p><form id="socialLinksForm" class="admin-form social-settings-form">
         <div><label for="socialFacebook">Facebook Page URL</label><input id="socialFacebook" type="url" inputmode="url" placeholder="https://www.facebook.com/yourpage"></div>
@@ -595,12 +602,12 @@ body{background:#f5efe4;color:#203421}
     const money=n=>'৳'+Number(n||0).toLocaleString('en-BD');
     const read=(key,fallback)=>{try{const v=JSON.parse(localStorage.getItem(key));return v??fallback}catch{return fallback}};
     let products=read(KEY_PRODUCTS,null);if(!Array.isArray(products)||!products.length){products=starterProducts;write(KEY_PRODUCTS,products)}
-    let cart=read(KEY_CART,[]),orders=read(KEY_ORDERS,[]),activeCategory='All',selectedProductSize={},heroProductId='';
+    let cart=read(KEY_CART,[]),orders=read(KEY_ORDERS,[]),activeCategory='All',selectedProductSize={},heroProductId='',heroModelUrl='';
     function write(key,val){localStorage.setItem(key,JSON.stringify(val))}
     function escapeHtml(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
     function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2300)}
      function productCard(p){const noModel=p.imageNoModel&&p.imageNoModel!==p.image;return `<article class="product-card"><div class="product-image" data-open-product="${escapeHtml(p.id)}"><img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)} on model" loading="lazy" onerror="this.style.opacity='.15'">${noModel?`<img class="product-no-model-image" src="${escapeHtml(p.imageNoModel)}" alt="${escapeHtml(p.name)} product only" loading="lazy" onerror="this.style.display='none'">`:''}<span class="tag">${p.stock>0?(p.featured?'Featured':'Available'):'Sold out'}</span><button class="quick-add" data-quick-add="${escapeHtml(p.id)}" ${p.stock<=0?'disabled':''}>${p.stock>0?'Quick view +':'Unavailable'}</button></div><div class="product-meta"><div class="product-meta-top"><div><h3>${escapeHtml(p.name)}</h3><div class="product-category">${escapeHtml(p.category)}</div></div><div class="price">${money(p.price)}${p.oldPrice>p.price?`<span class="old-price">${money(p.oldPrice)}</span>`:''}</div></div></div></article>`}
-    function renderHeroProduct(){const hero=products.find(p=>p.id===heroProductId)||products.filter(p=>p.featured===true&&p.stock>0).sort((a,b)=>(b.created||0)-(a.created||0))[0]||products[0];const image=document.getElementById('nfJacketFrame'),caption=document.getElementById('nfProductCaption'),hint=document.getElementById('nfHeroProductHint');if(!image)return;if(hero){image.src=hero.imageNoModel||hero.image;image.alt=hero.name+' product photo';if(caption)caption.innerHTML=`NEXT FORM <small>${escapeHtml(hero.name.toUpperCase())}</small>`;if(hint)hint.textContent=heroProductId?'ADMIN SELECTED PRODUCT':'LATEST FEATURED PRODUCT'}else{if(caption)caption.innerHTML='NEXT FORM <small>FEATURED PRODUCT</small>';if(hint)hint.textContent='CHOOSE IN ADMIN'}}
+    function renderHeroProduct(){const hero=products.find(p=>p.id===heroProductId)||products.filter(p=>p.featured===true&&p.stock>0).sort((a,b)=>(b.created||0)-(a.created||0))[0]||products[0];const image=document.getElementById('nfJacketFrame'),caption=document.getElementById('nfProductCaption'),hint=document.getElementById('nfHeroProductHint'),canvas=document.getElementById('nf3dCanvas');if(!image)return;if(hero){image.src=hero.imageNoModel||hero.image;image.alt=hero.name+' product photo';if(caption)caption.innerHTML=`NEXT FORM <small>${escapeHtml(hero.name.toUpperCase())}</small>`;if(hint)hint.textContent=heroProductId?'ADMIN SELECTED PRODUCT':'LATEST FEATURED PRODUCT'}else{if(caption)caption.innerHTML='NEXT FORM <small>FEATURED PRODUCT</small>';if(hint)hint.textContent='CHOOSE IN ADMIN'}if(canvas)canvas.dataset.modelUrl=heroModelUrl;window.nfHero3d?.setModel(heroModelUrl)}
     function renderFeaturedProducts(){const featured=products.filter(p=>p.featured===true&&p.stock>0).sort((a,b)=>(b.created||0)-(a.created||0));const section=document.getElementById('featuredSection'),grid=document.getElementById('featuredGrid');section.classList.toggle('hidden',featured.length===0);grid.innerHTML=featured.length?featured.map(productCard).join(''):''}
     function renderProducts(){const q=document.getElementById('searchInput').value.trim().toLowerCase(),sort=document.getElementById('sortSelect').value;let list=products.filter(p=>(activeCategory==='All'||p.category===activeCategory)&&(!q||(p.name+' '+p.category+' '+p.description).toLowerCase().includes(q)));if(sort==='low')list.sort((a,b)=>a.price-b.price);if(sort==='high')list.sort((a,b)=>b.price-a.price);if(sort==='new')list.sort((a,b)=>(b.created||0)-(a.created||0));if(sort==='featured')list.sort((a,b)=>(b.featured===true)-(a.featured===true));const grid=document.getElementById('productGrid');grid.innerHTML=list.length?list.map(productCard).join(''):'<div class="empty-state">No pieces found. Try another search or category.</div>';renderFeaturedProducts();renderHeroProduct();}
     function setCategory(cat){activeCategory=cat;document.querySelectorAll('.filter').forEach(b=>b.classList.toggle('active',b.dataset.category===cat));renderProducts()}
@@ -765,10 +772,11 @@ body{background:#f5efe4;color:#203421}
       document.getElementById('socialInstagram').value=links.instagram||'';
       document.getElementById('socialTiktok').value=links.tiktok||'';
     }
-    function updateHeroProductPreview(){const select=document.getElementById('heroProductSelect'),preview=document.getElementById('heroProductPreview'),selected=products.find(p=>p.id===select.value);preview.textContent=selected?`Selected: ${selected.name} (${selected.category}). The product-only photo appears in the showroom.`:'No fixed product selected. The newest featured item appears automatically.'}
+    function updateHeroProductPreview(){const select=document.getElementById('heroProductSelect'),preview=document.getElementById('heroProductPreview'),selected=products.find(p=>p.id===select.value);preview.textContent=selected?`Selected: ${selected.name} (${selected.category}).`:'No fixed product selected. The newest featured item appears automatically.';document.getElementById('heroModelStatus').textContent=heroModelUrl?'A custom 3D model is saved for this homepage product.':'The built-in NEXT FORM shirt model will appear until you upload a GLB file.'}
     function renderHeroProductOptions(){const select=document.getElementById('heroProductSelect');if(!select)return;select.innerHTML='<option value="">Use the newest featured product</option>'+products.map(p=>`<option value="${escapeHtml(p.id)}">${escapeHtml(p.name)} · ${escapeHtml(p.category)}</option>`).join('');select.value=heroProductId;updateHeroProductPreview()}
     document.getElementById('heroProductSelect').addEventListener('change',updateHeroProductPreview);
-    document.getElementById('heroProductForm').addEventListener('submit',async event=>{event.preventDefault();const button=document.getElementById('saveHeroProduct');button.disabled=true;button.textContent='Saving…';try{const saved=await nfApi('/api/admin/hero-product',{method:'PUT',body:JSON.stringify({productId:document.getElementById('heroProductSelect').value})});heroProductId=saved.productId||'';renderHeroProduct();renderHeroProductOptions();toast('Homepage product saved')}catch(error){toast(error.message)}finally{button.disabled=false;button.textContent='Save homepage product'}});
+    document.getElementById('heroModelUpload').addEventListener('change',async event=>{const file=event.target.files?.[0];if(!file)return;const status=document.getElementById('heroModelStatus');if(!file.name.toLowerCase().endsWith('.glb')||file.size>20*1024*1024){event.target.value='';toast('Choose a .glb model under 20 MB');return}status.textContent='Uploading 3D model…';try{const body=new FormData();body.append('model',file);const uploaded=await nfApi('/api/admin/upload-3d-model',{method:'POST',body});heroModelUrl=uploaded.modelUrl;status.textContent='Model uploaded. Select the product and save to publish it.';window.nfHero3d?.setModel(heroModelUrl)}catch(error){status.textContent=error.message;toast(error.message)}});
+    document.getElementById('heroProductForm').addEventListener('submit',async event=>{event.preventDefault();const button=document.getElementById('saveHeroProduct');button.disabled=true;button.textContent='Saving…';try{const saved=await nfApi('/api/admin/hero-product',{method:'PUT',body:JSON.stringify({productId:document.getElementById('heroProductSelect').value,modelUrl:heroModelUrl})});heroProductId=saved.productId||'';heroModelUrl=saved.modelUrl||'';renderHeroProduct();renderHeroProductOptions();toast('Homepage 3D model saved')}catch(error){toast(error.message)}finally{button.disabled=false;button.textContent='Save homepage 3D model'}});
     document.getElementById('socialLinksForm').addEventListener('submit',async event=>{
       event.preventDefault();const button=document.getElementById('saveSocialLinks');button.disabled=true;button.textContent='Saving…';
       try{
@@ -778,10 +786,10 @@ body{background:#f5efe4;color:#203421}
       }catch(error){toast(error.message)}
       finally{button.disabled=false;button.textContent='Save social links'}
     });
-    async function nfLoadProducts(){const response=await fetch('/api/products');if(!response.ok)throw new Error('Product API is not ready.');products=await response.json();renderProducts();try{const settings=await fetch('/api/hero-product');if(settings.ok){const data=await settings.json();heroProductId=data.productId||'';renderHeroProduct()}}catch(error){console.warn('Homepage product setting unavailable:',error.message)}}
+    async function nfLoadProducts(){const response=await fetch('/api/products');if(!response.ok)throw new Error('Product API is not ready.');products=await response.json();renderProducts();try{const settings=await fetch('/api/hero-product');if(settings.ok){const data=await settings.json();heroProductId=data.productId||'';heroModelUrl=data.modelUrl||'';renderHeroProduct()}}catch(error){console.warn('Homepage showroom setting unavailable:',error.message)}}
     async function nfLoadAdminData(){
       orders=await nfApi('/api/admin/orders');
-      const p=await nfApi('/api/products');products=p;try{const setting=await nfApi('/api/admin/hero-product');heroProductId=setting.productId||''}catch(error){heroProductId='';console.warn('Homepage product setting unavailable:',error.message)}renderProducts();renderAdmin();renderHeroProductOptions();
+      const p=await nfApi('/api/products');products=p;try{const setting=await nfApi('/api/admin/hero-product');heroProductId=setting.productId||'';heroModelUrl=setting.modelUrl||''}catch(error){heroProductId='';heroModelUrl='';console.warn('Homepage showroom setting unavailable:',error.message)}renderProducts();renderAdmin();renderHeroProductOptions();
     }
     function nfOpenLogin(){document.getElementById('adminLoginError').textContent='';document.getElementById('adminPassword').value='';showModal('adminLoginModal')}
     async function nfOpenAdmin(){
@@ -971,6 +979,54 @@ body{background:#f5efe4;color:#203421}
 })();
 </script>
 
+<script type="module">
+(()=>{
+ const canvas=document.getElementById('nf3dCanvas'),stage=document.getElementById('nf3dStage');
+ if(!canvas||!stage)return;
+ const init=async()=>{
+  try{
+   const THREE=await import('https://cdn.jsdelivr.net/npm/three@0.174.0/build/three.module.js');
+   const {GLTFLoader}=await import('https://cdn.jsdelivr.net/npm/three@0.174.0/examples/jsm/loaders/GLTFLoader.js');
+   const scene=new THREE.Scene();
+   const camera=new THREE.PerspectiveCamera(32,1,.1,100);camera.position.set(0,.15,4.4);camera.lookAt(0,-.02,0);
+   const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.35;
+   scene.add(new THREE.HemisphereLight(0xfff4dc,0x5a4834,2.2));
+   const key=new THREE.DirectionalLight(0xfff1d8,3.4);key.position.set(-3,5,5);scene.add(key);
+   const fill=new THREE.DirectionalLight(0xffd99a,2.3);fill.position.set(4,1,2);scene.add(fill);
+   const rim=new THREE.DirectionalLight(0xffffff,3);rim.position.set(0,3,-4);scene.add(rim);
+   const ground=new THREE.Mesh(new THREE.CylinderGeometry(1.05,1.1,.12,64),new THREE.MeshStandardMaterial({color:0xd8c29c,metalness:.22,roughness:.36}));ground.position.y=-1.27;scene.add(ground);
+   const edge=new THREE.Mesh(new THREE.TorusGeometry(1.04,.012,8,72),new THREE.MeshStandardMaterial({color:0xd8b26e,metalness:.6,roughness:.28}));edge.rotation.x=Math.PI/2;edge.position.y=-1.19;scene.add(edge);
+   const garment=new THREE.Group();scene.add(garment);let customRoot=null,currentUrl='',dragging=false,lastX=0,frame=0;
+   const cloth=new THREE.MeshStandardMaterial({color:0xe9dfcc,roughness:.83,side:THREE.DoubleSide});
+   const seam=new THREE.MeshStandardMaterial({color:0xcbbb9e,roughness:.9,side:THREE.DoubleSide});
+   function polygon(points,material,z=0,depth=.1){const s=new THREE.Shape();s.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)s.lineTo(points[i][0],points[i][1]);s.closePath();const geo=new THREE.ExtrudeGeometry(s,{depth,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:.025,bevelThickness:.025});geo.translate(0,0,-depth/2);const m=new THREE.Mesh(geo,material);m.position.z=z;garment.add(m);return m}
+   function textLogo(){const c=document.createElement('canvas');c.width=256;c.height=128;const x=c.getContext('2d');x.clearRect(0,0,256,128);x.fillStyle='#18351d';x.font='bold 76px Georgia';x.fillText('NF',22,88);const map=new THREE.CanvasTexture(c);map.colorSpace=THREE.SRGBColorSpace;const mark=new THREE.Mesh(new THREE.PlaneGeometry(.27,.13),new THREE.MeshBasicMaterial({map,transparent:true,side:THREE.DoubleSide}));mark.position.set(-.35,.02,.163);garment.add(mark)}
+   function makeDefault(){garment.clear();customRoot=null;
+    polygon([[-.61,-1.03],[.61,-1.03],[.6,.27],[.76,.67],[.48,.91],[.2,.86],[.12,.7],[-.12,.7],[-.2,.86],[-.48,.91],[-.76,.67],[-.6,.27]],cloth,0,.27);
+    polygon([[-.68,.7],[-.94,.52],[-.83,.04],[-.54,.12],[-.48,.61]],cloth,0,.22);
+    polygon([[.68,.7],[.94,.52],[.83,.04],[.54,.12],[.48,.61]],cloth,0,.22);
+    polygon([[-.17,.78],[0,.53],[.17,.78],[.08,.69],[0,.58],[-.08,.69]],seam,.151,.015);
+    polygon([[-.035,.55],[.035,.55],[.035,-.94],[-.035,-.94]],seam,.151,.016);
+    for(let y=.36;y>-.83;y-=.24){const b=new THREE.Mesh(new THREE.SphereGeometry(.025,12,10),new THREE.MeshStandardMaterial({color:0xb49c73,roughness:.6}));b.position.set(0,y,.18);b.scale.z=.4;garment.add(b)}
+    const hem=new THREE.Mesh(new THREE.BoxGeometry(1.17,.035,.285),seam);hem.position.set(0,-.96,0);garment.add(hem);
+    for(const side of [-1,1]){const cuff=new THREE.Mesh(new THREE.BoxGeometry(.32,.045,.23),seam);cuff.position.set(side*.69,.11,0);cuff.rotation.z=side*-.17;garment.add(cuff)}
+    textLogo();
+   }
+   function fitModel(object){const box=new THREE.Box3().setFromObject(object),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3()),max=Math.max(size.x,size.y,size.z)||1;object.position.sub(center);object.scale.setScalar(2.25/max);object.position.y=.02;}
+   function setModel(url){currentUrl=url||'';if(!url){makeDefault();canvas.style.opacity='1';return}new GLTFLoader().load(url,gltf=>{if(url!==currentUrl)return;if(customRoot)garment.remove(customRoot);customRoot=gltf.scene;fitModel(customRoot);garment.add(customRoot);canvas.style.opacity='1'},undefined,()=>{makeDefault();canvas.style.opacity='1'})}
+   window.nfHero3d={setModel};setModel(canvas.dataset.modelUrl||'');
+   const resize=()=>{const r=canvas.getBoundingClientRect();if(!r.width||!r.height)return;renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix()};new ResizeObserver(resize).observe(canvas.parentElement);resize();
+   canvas.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX;canvas.setPointerCapture(e.pointerId);canvas.style.cursor='grabbing'});
+   canvas.addEventListener('pointermove',e=>{if(!dragging)return;garment.rotation.y+=(e.clientX-lastX)*.012;lastX=e.clientX});
+   const end=()=>{dragging=false;canvas.style.cursor='grab'};canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);canvas.addEventListener('lostpointercapture',end);
+   const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+   const animate=()=>{frame=requestAnimationFrame(animate);if(!dragging&&!reduceMotion)garment.rotation.y+=.004;renderer.render(scene,camera)};animate();
+   document.getElementById('nfJacketFrame').style.opacity='0';
+  }catch(error){console.warn('3D garment preview unavailable:',error)}
+ };
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
 
 <script>
 (()=>{
