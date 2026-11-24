@@ -24,6 +24,7 @@ const authClient = supabaseReady
 const imageUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 }, fileFilter: (_req, file, cb) => {
   cb(null, ['image/jpeg', 'image/png', 'image/webp'].includes(file.mimetype));
 } });
+const modelUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });
 
 app.disable('x-powered-by');
 app.set('trust proxy', 1);
@@ -116,25 +117,34 @@ app.get('/api/products', requireDatabase, async (_req, res) => {
 });
 
 app.get('/api/hero-product', requireDatabase, async (_req, res) => {
-  const { data, error } = await supabase.from('storefront_settings').select('hero_product_id').eq('id', true).maybeSingle();
+  const { data, error } = await supabase.from('storefront_settings').select('hero_product_id,hero_model_url').eq('id', true).maybeSingle();
   if (error) {
     console.error('Homepage product read:', error.message);
     return res.status(503).json({ error: 'Apply the homepage product database migration to enable this setting.' });
   }
-  res.json({ productId: data?.hero_product_id || null });
+  res.json({ productId: data?.hero_product_id || null, modelUrl: data?.hero_model_url || null });
 });
 
 app.get('/api/admin/hero-product', requireAdmin, async (_req, res) => {
-  const { data, error } = await supabase.from('storefront_settings').select('hero_product_id').eq('id', true).maybeSingle();
+  const { data, error } = await supabase.from('storefront_settings').select('hero_product_id,hero_model_url').eq('id', true).maybeSingle();
   if (error) {
     console.error('Admin homepage product read:', error.message);
     return res.status(503).json({ error: 'Apply the homepage product database migration to enable this setting.' });
   }
-  res.json({ productId: data?.hero_product_id || '' });
+  res.json({ productId: data?.hero_product_id || '', modelUrl: data?.hero_model_url || '' });
 });
 
 app.put('/api/admin/hero-product', requireAdmin, async (req, res) => {
   const productId = typeof req.body?.productId === 'string' ? req.body.productId.trim() : '';
+  const modelUrl = typeof req.body?.modelUrl === 'string' ? req.body.modelUrl.trim() : '';
+  if (modelUrl) {
+    let parsedModelUrl;
+    try { parsedModelUrl = new URL(modelUrl); } catch { return res.status(400).json({ error: 'Upload a valid 3D model first.' }); }
+    const expectedHost = new URL(process.env.SUPABASE_URL).host;
+    if (parsedModelUrl.protocol !== 'https:' || parsedModelUrl.host !== expectedHost || !parsedModelUrl.pathname.includes('/storage/v1/object/public/3d-models/')) {
+      return res.status(400).json({ error: 'Choose a 3D model uploaded to the NEXT FORM model library.' });
+    }
+  }
   if (productId) {
     const { data: product, error: productError } = await supabase.from('products').select('id').eq('id', productId).eq('is_active', true).maybeSingle();
     if (productError) return res.status(500).json({ error: 'Could not verify the selected product.' });
@@ -143,13 +153,29 @@ app.put('/api/admin/hero-product', requireAdmin, async (req, res) => {
   const { data, error } = await supabase.from('storefront_settings').upsert({
     id: true,
     hero_product_id: productId || null,
+    hero_model_url: modelUrl || null,
     updated_at: new Date().toISOString()
   }).select('hero_product_id').single();
   if (error) {
     console.error('Homepage product save:', error.message);
     return res.status(503).json({ error: 'Could not save. Apply the homepage product database migration first.' });
   }
-  res.json({ productId: data.hero_product_id || '' });
+  res.json({ productId: data.hero_product_id || '', modelUrl: data.hero_model_url || '' });
+});
+
+app.post('/api/admin/upload-3d-model', requireAdmin, modelUpload.single('model'), async (req, res) => {
+  const buffer = req.file?.buffer;
+  if (!buffer || buffer.length < 20 || buffer.toString('ascii', 0, 4) !== 'glTF') {
+    return res.status(400).json({ error: 'Choose a valid binary .glb 3D model (maximum 20 MB).' });
+  }
+  const objectPath = `${new Date().toISOString().slice(0, 10)}/${randomBytes(12).toString('hex')}.glb`;
+  const { error } = await supabase.storage.from('3d-models').upload(objectPath, buffer, { contentType: 'model/gltf-binary', upsert: false, cacheControl: '31536000' });
+  if (error) {
+    console.error('3D model upload:', error.message);
+    return res.status(500).json({ error: 'Could not upload the model. Apply the 3D model database migration first.' });
+  }
+  const { data } = supabase.storage.from('3d-models').getPublicUrl(objectPath);
+  res.json({ modelUrl: data.publicUrl });
 });
 
 app.post('/api/admin/login', loginLimiter, requireDatabase, async (req, res) => {
