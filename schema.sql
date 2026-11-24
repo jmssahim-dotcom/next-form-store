@@ -29,6 +29,17 @@ create table if not exists public.products (
 alter table public.products
   add column if not exists image_url_no_model text not null default '';
 
+create table if not exists public.storefront_settings (
+  id boolean primary key default true check (id),
+  hero_product_id uuid references public.products(id) on delete set null,
+  hero_model_url text,
+  updated_at timestamptz not null default now()
+);
+alter table public.storefront_settings enable row level security;
+revoke all on public.storefront_settings from anon, authenticated;
+grant all on public.storefront_settings to service_role;
+insert into public.storefront_settings (id) values (true) on conflict (id) do nothing;
+
 create table if not exists public.orders (
   id uuid primary key default gen_random_uuid(),
   order_number text not null unique,
@@ -135,6 +146,18 @@ create policy "only NF admins update product images" on storage.objects
 drop policy if exists "only NF admins delete product images" on storage.objects;
 create policy "only NF admins delete product images" on storage.objects
   for delete to authenticated using (bucket_id = 'product-images' and public.is_nf_admin());
+
+-- Public 3D product models; only the authenticated application server can write them.
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('3d-models', '3d-models', true, 20971520, array['model/gltf-binary','application/octet-stream'])
+on conflict (id) do update set public = true, file_size_limit = 20971520,
+  allowed_mime_types = array['model/gltf-binary','application/octet-stream'];
+drop policy if exists "NEXT FORM GLB models are public to view" on storage.objects;
+create policy "NEXT FORM GLB models are public to view" on storage.objects
+  for select using (bucket_id = '3d-models');
+drop policy if exists "Only NEXT FORM server uploads GLB models" on storage.objects;
+create policy "Only NEXT FORM server uploads GLB models" on storage.objects
+  for insert to service_role with check (bucket_id = '3d-models');
 
 -- Atomically check and deduct stock once a safe, validated online payment succeeds.
 create or replace function public.nf_finalize_paid_order(
