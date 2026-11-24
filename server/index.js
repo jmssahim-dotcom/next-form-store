@@ -115,6 +115,43 @@ app.get('/api/products', requireDatabase, async (_req, res) => {
   res.json(data.map(mapProduct));
 });
 
+app.get('/api/hero-product', requireDatabase, async (_req, res) => {
+  const { data, error } = await supabase.from('storefront_settings').select('hero_product_id').eq('id', true).maybeSingle();
+  if (error) {
+    console.error('Homepage product read:', error.message);
+    return res.status(503).json({ error: 'Apply the homepage product database migration to enable this setting.' });
+  }
+  res.json({ productId: data?.hero_product_id || null });
+});
+
+app.get('/api/admin/hero-product', requireAdmin, async (_req, res) => {
+  const { data, error } = await supabase.from('storefront_settings').select('hero_product_id').eq('id', true).maybeSingle();
+  if (error) {
+    console.error('Admin homepage product read:', error.message);
+    return res.status(503).json({ error: 'Apply the homepage product database migration to enable this setting.' });
+  }
+  res.json({ productId: data?.hero_product_id || '' });
+});
+
+app.put('/api/admin/hero-product', requireAdmin, async (req, res) => {
+  const productId = typeof req.body?.productId === 'string' ? req.body.productId.trim() : '';
+  if (productId) {
+    const { data: product, error: productError } = await supabase.from('products').select('id').eq('id', productId).eq('is_active', true).maybeSingle();
+    if (productError) return res.status(500).json({ error: 'Could not verify the selected product.' });
+    if (!product) return res.status(400).json({ error: 'Choose an available product from the catalogue.' });
+  }
+  const { data, error } = await supabase.from('storefront_settings').upsert({
+    id: true,
+    hero_product_id: productId || null,
+    updated_at: new Date().toISOString()
+  }).select('hero_product_id').single();
+  if (error) {
+    console.error('Homepage product save:', error.message);
+    return res.status(503).json({ error: 'Could not save. Apply the homepage product database migration first.' });
+  }
+  res.json({ productId: data.hero_product_id || '' });
+});
+
 app.post('/api/admin/login', loginLimiter, requireDatabase, async (req, res) => {
   const email = String(req.body?.email || '').trim();
   const password = String(req.body?.password || '');
