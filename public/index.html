@@ -289,8 +289,7 @@ body{background:var(--nf-cream);color:#121212}
 .nf-benefits span{display:flex;align-items:center;gap:8px;white-space:nowrap}
 .nf-benefits b{color:#d1ae74;font-size:22px;font-weight:400}
 .nf-edition{margin-top:43px;color:rgba(230,222,208,.45);font-size:8px;letter-spacing:.24em}
-.nf-product-showcase{position:relative;align-self:stretch;min-width:0;display:grid;place-items:center;isolation:isolate;overflow:hidden;touch-action:pan-y;cursor:grab}
-.nf-product-showcase.is-dragging{cursor:grabbing}
+.nf-product-showcase{position:relative;align-self:stretch;min-width:0;display:grid;place-items:center;isolation:isolate;overflow:hidden}
 .nf-product-showcase:before{content:"";position:absolute;width:68%;aspect-ratio:1;border:1px solid rgba(215,179,117,.48);border-radius:50%;box-shadow:0 0 0 30px rgba(255,255,255,.018),0 0 0 64px rgba(255,255,255,.012),0 0 48px rgba(203,163,97,.10);animation:nfRingPulse 6s ease-in-out infinite}
 .nf-product-showcase:after{content:"";position:absolute;inset:4% 2%;background:radial-gradient(ellipse at 50% 40%,rgba(197,161,106,.16),transparent 65%);pointer-events:none;z-index:-1}
 .nf-product-orbit{position:absolute;width:80%;height:49%;border:1px solid rgba(210,171,110,.28);border-radius:50%;pointer-events:none}
@@ -298,23 +297,10 @@ body{background:var(--nf-cream);color:#121212}
 .nf-orbit-b{width:72%;height:42%;transform:rotate(28deg);border-color:rgba(255,255,255,.10);animation:nfOrbitTurn 34s linear infinite reverse}
 .nf-product-topline{position:absolute;top:8%;left:7%;right:6%;display:flex;justify-content:space-between;gap:10px;color:#d2c2a6;font-size:8px;letter-spacing:.2em;z-index:5}
 .nf-product-topline span{color:rgba(240,231,217,.56);font-size:7px}
-.nf-360-label{position:absolute;left:2%;top:32%;z-index:5;color:#e9dfce;text-align:center;display:grid;gap:0;font-size:17px;font-weight:600}
-.nf-360-label span{font-size:24px;color:#d3ad70}
 .nf-jacket-wrap{position:relative;z-index:3;width:86%;height:78%;display:grid;place-items:center;perspective:1200px;transform-style:preserve-3d}
-#nfJacketFrame{width:100%;height:100%;object-fit:contain;mix-blend-mode:screen;filter:drop-shadow(0 32px 25px rgba(0,0,0,.55)) contrast(1.1);user-select:none;-webkit-user-drag:none;pointer-events:none;transition:opacity .2s,transform .38s cubic-bezier(.2,.8,.2,1);animation:nfJacketFloat 5.8s ease-in-out infinite}
-#nfJacketFrame.nf-changing{opacity:.35;transform:translateY(7px) scale(.96)}
+#nfJacketFrame{width:100%;height:100%;object-fit:contain;mix-blend-mode:normal;filter:drop-shadow(0 32px 25px rgba(0,0,0,.2));user-select:none;-webkit-user-drag:none;pointer-events:none}
 .nf-podium{position:absolute;z-index:2;bottom:8%;left:9%;right:9%;height:34px;border-radius:50%;background:linear-gradient(180deg,#272727,#080808 52%,#171411);border:1px solid rgba(221,194,150,.65);box-shadow:0 8px 0 #050505,0 11px 28px rgba(0,0,0,.75),0 0 22px rgba(203,163,97,.34)}
 .nf-podium:after{content:"";position:absolute;left:3%;right:3%;bottom:-8px;height:5px;border-radius:50%;background:#d5ad6b;filter:blur(7px)}
-.nf-rotate-arrow{position:absolute;z-index:6;top:52%;width:39px;height:39px;border:1px solid rgba(218,185,131,.8);background:rgba(10,10,10,.48);color:#f3e6d2;border-radius:50%;font-size:26px;display:grid;place-items:center;transition:.2s}
-.nf-rotate-arrow:hover{background:#c5a16a;color:#111;transform:scale(1.08)}
-.nf-rotate-prev{left:1%}.nf-rotate-next{right:14%}
-.nf-product-thumbs{position:absolute;z-index:7;right:2%;top:19%;display:grid;gap:8px}
-.nf-angle-thumb{width:58px;height:65px;padding:2px;border:1px solid rgba(211,174,116,.55);background:#181715;border-radius:8px;overflow:hidden;opacity:.72;transition:.2s}
-.nf-angle-thumb.active,.nf-angle-thumb:hover{opacity:1;border-color:#e0bd82;box-shadow:0 0 14px rgba(208,165,99,.2)}
-.nf-angle-thumb img{width:100%;height:100%;object-fit:cover;mix-blend-mode:screen}
-.nf-product-dots{position:absolute;bottom:2%;left:50%;transform:translateX(-50%);display:flex;gap:12px;z-index:6}
-.nf-product-dots span{width:10px;height:10px;border:1px solid #d4b177;border-radius:50%}
-.nf-product-dots span.active{background:#d3ad70}
 .nf-product-caption{position:absolute;bottom:7%;left:50%;transform:translateX(-50%);z-index:5;white-space:nowrap;color:#e2d5bd;font-size:9px;letter-spacing:.22em}
 .nf-product-caption small{display:block;text-align:center;font-size:7px;letter-spacing:.18em;color:#b7a68d;margin-top:6px}
 .nf-collection-panel{align-self:center;min-width:0;border-left:1px solid rgba(218,192,151,.23);padding-left:clamp(15px,1.7vw,28px);display:grid;gap:15px}
@@ -343,7 +329,6 @@ body{background:var(--nf-cream);color:#121212}
 .ticker{display:none}
 @keyframes nfRingPulse{0%,100%{transform:scale(.96);opacity:.7}50%{transform:scale(1.04);opacity:1}}
 @keyframes nfOrbitTurn{to{rotate:360deg}}
-@keyframes nfJacketFloat{0%,100%{transform:translateY(1px) rotateY(-3deg)}50%{transform:translateY(-9px) rotateY(3deg)}}
 @media(max-width:1200px){
  .hero.nf-showroom{grid-template-columns:minmax(260px,.85fr) minmax(360px,1.15fr);min-height:610px;height:auto}
  .nf-collection-panel{grid-column:1/-1;grid-template-columns:repeat(3,1fr);border-left:0;border-top:1px solid rgba(218,192,151,.23);padding:18px 0 0}
@@ -371,10 +356,6 @@ body{background:var(--nf-cream);color:#121212}
  .nf-edition{margin-top:23px}
  .nf-product-showcase{height:490px;min-height:440px}
  .nf-jacket-wrap{height:76%;width:90%}
- .nf-product-thumbs{right:0;top:16%;gap:6px}
- .nf-angle-thumb{width:47px;height:53px}
- .nf-rotate-prev{left:0}.nf-rotate-next{right:14%}
- .nf-360-label{left:0;top:29%}
  .nf-podium{bottom:11%}
  .nf-product-caption{bottom:10%}
  .nf-collection-panel{grid-template-columns:1fr;gap:10px;margin-top:12px}
@@ -440,16 +421,8 @@ body{background:#f5efe4;color:#203421}
 .nf-orbit-b{border-color:rgba(32,52,33,.12)}
 .nf-product-topline{color:#5d624e}
 .nf-product-topline span{color:#827a68}
-.nf-360-label{color:#33452f}
-.nf-360-label span{color:#a87f3a}
 .nf-podium{background:linear-gradient(180deg,#f5ead7,#dac49f 52%,#eee0c7);border-color:rgba(166,126,58,.58);box-shadow:0 8px 0 #cdb995,0 11px 28px rgba(92,67,31,.16),0 0 22px rgba(181,139,69,.18)}
 .nf-podium:after{background:#b58b45}
-.nf-rotate-arrow{border-color:rgba(166,126,58,.7);background:rgba(255,251,243,.88);color:#34442e}
-.nf-rotate-arrow:hover{background:#b58b45;color:#fffaf0}
-.nf-angle-thumb{border-color:#c9b58f;background:#f6efe3}
-.nf-angle-thumb.active,.nf-angle-thumb:hover{border-color:#a87f3a;box-shadow:0 0 14px rgba(181,139,69,.18)}
-.nf-product-dots span{border-color:#a87f3a}
-.nf-product-dots span.active{background:#b58b45}
 .nf-product-caption{color:#3d4936}
 .nf-product-caption small{color:#766c58}
 .nf-collection-panel{border-color:#d8c6a3}
@@ -522,22 +495,12 @@ body{background:#f5efe4;color:#203421}
         <div class="nf-product-showcase" id="nf3dStage" aria-label="Interactive NEXT FORM bomber jacket viewer">
           <div class="nf-product-orbit nf-orbit-a"></div>
           <div class="nf-product-orbit nf-orbit-b"></div>
-          <div class="nf-product-topline">NF / OBJECT 001 <span>DRAG TO ROTATE · 4 ANGLES</span></div>
-          <div class="nf-360-label"><b>360°</b><span>↻</span></div>
-          <button class="nf-rotate-arrow nf-rotate-prev" type="button" aria-label="Previous jacket angle">‹</button>
+          <div class="nf-product-topline">NF / FEATURED PRODUCT <span id="nfHeroProductHint">CHOOSE IN ADMIN</span></div>
           <div class="nf-podium"></div>
           <div class="nf-jacket-wrap">
-            <img id="nfJacketFrame" src="/assets/nf-jacket-angle-1.webp" alt="NEXT FORM black NF bomber jacket, front view" draggable="false">
+            <img id="nfJacketFrame" src="/assets/nf-jacket-angle-1.webp" alt="NEXT FORM featured product" draggable="false">
           </div>
-          <button class="nf-rotate-arrow nf-rotate-next" type="button" aria-label="Next jacket angle">›</button>
-          <div class="nf-product-thumbs" aria-label="Jacket angles">
-            <button class="nf-angle-thumb active" type="button" data-angle="0" aria-label="Front view"><img src="/assets/nf-jacket-angle-1.webp" alt=""></button>
-            <button class="nf-angle-thumb" type="button" data-angle="1" aria-label="Three-quarter view"><img src="/assets/nf-jacket-angle-2.webp" alt=""></button>
-            <button class="nf-angle-thumb" type="button" data-angle="2" aria-label="Back view"><img src="/assets/nf-jacket-angle-3.webp" alt=""></button>
-            <button class="nf-angle-thumb" type="button" data-angle="3" aria-label="Side view"><img src="/assets/nf-jacket-angle-4.webp" alt=""></button>
-          </div>
-          <div class="nf-product-dots"><span class="active"></span><span></span><span></span></div>
-          <div class="nf-product-caption">NEXT FORM <small>OBJECT 001 / SIGNATURE BOMBER</small></div>
+          <div class="nf-product-caption" id="nfProductCaption">NEXT FORM <small>FEATURED PRODUCT</small></div>
         </div>
 
         <aside class="nf-collection-panel">
@@ -583,7 +546,7 @@ body{background:#f5efe4;color:#203421}
     <div class="admin-top"><div style="display:flex;align-items:center;gap:12px"><span class="brand-mark" style="border-color:#fff;color:#fff">NF</span><h1>NEXT FORM / ADMIN</h1></div><button class="btn btn-light" id="backToStore">← Back to store</button></div>
     <div class="admin-wrap"><div class="admin-title"><div><div class="eyebrow muted">Store management</div><h2>Dashboard</h2><p class="admin-hint">Secure administrator area · shared product catalogue · customer orders.</p><p class="admin-hint" id="adminSignedInAs"></p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-outline" id="adminLogout" type="button">Sign out</button><button class="btn" id="exportProducts">Export products JSON ↓</button></div></div>
       <div class="stats"><div class="stat"><span>Products</span><strong id="statProducts">0</strong></div><div class="stat"><span>Featured on homepage</span><strong id="statFeatured">0</strong></div><div class="stat"><span>Orders saved here</span><strong id="statOrders">0</strong></div><div class="stat"><span>Potential sales total</span><strong id="statSales">৳0</strong></div></div>
-      <div class="admin-tabs"><button class="active" data-tab="productsTab">Products</button><button data-tab="ordersTab">Orders</button><button data-tab="socialTab">Social media</button></div>
+      <div class="admin-tabs"><button class="active" data-tab="productsTab">Products</button><button data-tab="showroomTab">Homepage product</button><button data-tab="ordersTab">Orders</button><button data-tab="socialTab">Social media</button></div>
       <div id="productsTab"><div class="admin-layout"><div class="panel"><h3 id="formTitle">Add a product</h3><form id="productForm" class="admin-form">
         <input type="hidden" id="productId">
         <div><label for="pName">Product name *</label><input id="pName" required maxlength="70" placeholder="e.g. Essential Oversized Tee"></div>
@@ -600,6 +563,7 @@ body{background:#f5efe4;color:#203421}
         <button class="btn full" type="submit" id="saveProduct">Save product</button><button class="btn btn-outline full hidden" type="button" id="cancelEdit">Cancel editing</button>
         <p class="admin-hint">Choose “Feature on storefront” to show this product on the homepage. Changes are saved to the shared Supabase database.</p>
       </form></div><div class="panel"><h3>Your products</h3><div style="overflow:auto"><table class="admin-products"><thead><tr><th>Item</th><th>Price</th><th>Stock</th><th>Homepage</th><th>Actions</th></tr></thead><tbody id="adminProductRows"></tbody></table></div><p class="admin-hint" id="productTableHint"></p></div></div></div>
+      <div id="showroomTab" class="hidden"><div class="panel" style="max-width:760px"><h3>Homepage showroom product</h3><p class="admin-hint">Choose the product shown in the large homepage display. Change the product photos in Products first; this setting is saved for every visitor.</p><form id="heroProductForm" class="admin-form"><div><label for="heroProductSelect">Show this product</label><select id="heroProductSelect"><option value="">Use the newest featured product</option></select></div><div id="heroProductPreview" class="admin-hint"></div><button class="btn" id="saveHeroProduct" type="submit">Save homepage product</button></form></div></div>
       <div id="ordersTab" class="hidden"><div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h3>Customer orders</h3><button class="btn btn-outline" id="exportOrders">Export orders CSV ↓</button></div><div id="ordersList"></div><p class="admin-hint">Customer orders are loaded from the shared database. Online payment status is confirmed by the gateway validation endpoint and IPN listener.</p></div></div>
       <div id="socialTab" class="hidden"><div class="panel social-settings-panel"><h3>Social media profiles</h3><p class="admin-hint">Add your official profile links. They will appear in the storefront footer after saving and are stored in Supabase.</p><form id="socialLinksForm" class="admin-form social-settings-form">
         <div><label for="socialFacebook">Facebook Page URL</label><input id="socialFacebook" type="url" inputmode="url" placeholder="https://www.facebook.com/yourpage"></div>
@@ -631,13 +595,14 @@ body{background:#f5efe4;color:#203421}
     const money=n=>'৳'+Number(n||0).toLocaleString('en-BD');
     const read=(key,fallback)=>{try{const v=JSON.parse(localStorage.getItem(key));return v??fallback}catch{return fallback}};
     let products=read(KEY_PRODUCTS,null);if(!Array.isArray(products)||!products.length){products=starterProducts;write(KEY_PRODUCTS,products)}
-    let cart=read(KEY_CART,[]),orders=read(KEY_ORDERS,[]),activeCategory='All',selectedProductSize={};
+    let cart=read(KEY_CART,[]),orders=read(KEY_ORDERS,[]),activeCategory='All',selectedProductSize={},heroProductId='';
     function write(key,val){localStorage.setItem(key,JSON.stringify(val))}
     function escapeHtml(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
     function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2300)}
      function productCard(p){const noModel=p.imageNoModel&&p.imageNoModel!==p.image;return `<article class="product-card"><div class="product-image" data-open-product="${escapeHtml(p.id)}"><img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)} on model" loading="lazy" onerror="this.style.opacity='.15'">${noModel?`<img class="product-no-model-image" src="${escapeHtml(p.imageNoModel)}" alt="${escapeHtml(p.name)} product only" loading="lazy" onerror="this.style.display='none'">`:''}<span class="tag">${p.stock>0?(p.featured?'Featured':'Available'):'Sold out'}</span><button class="quick-add" data-quick-add="${escapeHtml(p.id)}" ${p.stock<=0?'disabled':''}>${p.stock>0?'Quick view +':'Unavailable'}</button></div><div class="product-meta"><div class="product-meta-top"><div><h3>${escapeHtml(p.name)}</h3><div class="product-category">${escapeHtml(p.category)}</div></div><div class="price">${money(p.price)}${p.oldPrice>p.price?`<span class="old-price">${money(p.oldPrice)}</span>`:''}</div></div></div></article>`}
+    function renderHeroProduct(){const hero=products.find(p=>p.id===heroProductId)||products.filter(p=>p.featured===true&&p.stock>0).sort((a,b)=>(b.created||0)-(a.created||0))[0]||products[0];const image=document.getElementById('nfJacketFrame'),caption=document.getElementById('nfProductCaption'),hint=document.getElementById('nfHeroProductHint');if(!image)return;if(hero){image.src=hero.imageNoModel||hero.image;image.alt=hero.name+' product photo';if(caption)caption.innerHTML=`NEXT FORM <small>${escapeHtml(hero.name.toUpperCase())}</small>`;if(hint)hint.textContent='ADMIN SELECTED PRODUCT'}else{if(caption)caption.innerHTML='NEXT FORM <small>FEATURED PRODUCT</small>';if(hint)hint.textContent='CHOOSE IN ADMIN'}}
     function renderFeaturedProducts(){const featured=products.filter(p=>p.featured===true&&p.stock>0).sort((a,b)=>(b.created||0)-(a.created||0));const section=document.getElementById('featuredSection'),grid=document.getElementById('featuredGrid');section.classList.toggle('hidden',featured.length===0);grid.innerHTML=featured.length?featured.map(productCard).join(''):''}
-    function renderProducts(){const q=document.getElementById('searchInput').value.trim().toLowerCase(),sort=document.getElementById('sortSelect').value;let list=products.filter(p=>(activeCategory==='All'||p.category===activeCategory)&&(!q||(p.name+' '+p.category+' '+p.description).toLowerCase().includes(q)));if(sort==='low')list.sort((a,b)=>a.price-b.price);if(sort==='high')list.sort((a,b)=>b.price-a.price);if(sort==='new')list.sort((a,b)=>(b.created||0)-(a.created||0));if(sort==='featured')list.sort((a,b)=>(b.featured===true)-(a.featured===true));const grid=document.getElementById('productGrid');grid.innerHTML=list.length?list.map(productCard).join(''):'<div class="empty-state">No pieces found. Try another search or category.</div>';renderFeaturedProducts();}
+    function renderProducts(){const q=document.getElementById('searchInput').value.trim().toLowerCase(),sort=document.getElementById('sortSelect').value;let list=products.filter(p=>(activeCategory==='All'||p.category===activeCategory)&&(!q||(p.name+' '+p.category+' '+p.description).toLowerCase().includes(q)));if(sort==='low')list.sort((a,b)=>a.price-b.price);if(sort==='high')list.sort((a,b)=>b.price-a.price);if(sort==='new')list.sort((a,b)=>(b.created||0)-(a.created||0));if(sort==='featured')list.sort((a,b)=>(b.featured===true)-(a.featured===true));const grid=document.getElementById('productGrid');grid.innerHTML=list.length?list.map(productCard).join(''):'<div class="empty-state">No pieces found. Try another search or category.</div>';renderFeaturedProducts();renderHeroProduct();}
     function setCategory(cat){activeCategory=cat;document.querySelectorAll('.filter').forEach(b=>b.classList.toggle('active',b.dataset.category===cat));renderProducts()}
     function openProduct(id){
       const p=products.find(x=>x.id===id);if(!p)return;
@@ -761,7 +726,7 @@ body{background:#f5efe4;color:#203421}
         </div>`;
       showModal('orderDetailsModal');
     });
-    document.querySelectorAll('.admin-tabs button').forEach(b=>b.onclick=async()=>{document.querySelectorAll('.admin-tabs button').forEach(x=>x.classList.toggle('active',x===b));['productsTab','ordersTab','socialTab'].forEach(id=>document.getElementById(id).classList.toggle('hidden',b.dataset.tab!==id));if(b.dataset.tab==='socialTab'){try{await nfLoadAdminSocialLinks()}catch(err){toast(err.message)}}});
+    document.querySelectorAll('.admin-tabs button').forEach(b=>b.onclick=async()=>{document.querySelectorAll('.admin-tabs button').forEach(x=>x.classList.toggle('active',x===b));['productsTab','showroomTab','ordersTab','socialTab'].forEach(id=>document.getElementById(id).classList.toggle('hidden',b.dataset.tab!==id));if(b.dataset.tab==='socialTab'){try{await nfLoadAdminSocialLinks()}catch(err){toast(err.message)}}if(b.dataset.tab==='showroomTab')renderHeroProductOptions()});
     document.getElementById('exportProducts').onclick=()=>download('next-form-products.json',JSON.stringify(products,null,2),'application/json');document.getElementById('exportOrders').onclick=()=>{const rows=[['Order ID','Date','Name','Phone','Email','Address','City','Payment','Items','Total'],...orders.map(o=>[o.id,o.created,o.customer.name,o.customer.phone,o.customer.email,o.customer.address,o.customer.city,o.customer.payment,o.items.map(i=>`${i.name} (${i.size}) x${i.qty}`).join('; '),o.total])];download('next-form-orders.csv',rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n'),'text/csv')};function download(name,data,type){const blob=new Blob([data],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();URL.revokeObjectURL(url)}
     // ---- NEXT FORM live backend integration (Supabase + SSLCOMMERZ + WhatsApp) ----
     let nfConfig=null, nfAdminToken=sessionStorage.getItem('nf_admin_access')||'', nfRefreshToken=sessionStorage.getItem('nf_admin_refresh')||'';
@@ -800,6 +765,10 @@ body{background:#f5efe4;color:#203421}
       document.getElementById('socialInstagram').value=links.instagram||'';
       document.getElementById('socialTiktok').value=links.tiktok||'';
     }
+    function updateHeroProductPreview(){const select=document.getElementById('heroProductSelect'),preview=document.getElementById('heroProductPreview'),selected=products.find(p=>p.id===select.value);preview.textContent=selected?`Selected: ${selected.name} (${selected.category}). The product-only photo appears in the showroom.`:'No fixed product selected. The newest featured item appears automatically.'}
+    function renderHeroProductOptions(){const select=document.getElementById('heroProductSelect');if(!select)return;select.innerHTML='<option value="">Use the newest featured product</option>'+products.map(p=>`<option value="${escapeHtml(p.id)}">${escapeHtml(p.name)} · ${escapeHtml(p.category)}</option>`).join('');select.value=heroProductId;updateHeroProductPreview()}
+    document.getElementById('heroProductSelect').addEventListener('change',updateHeroProductPreview);
+    document.getElementById('heroProductForm').addEventListener('submit',async event=>{event.preventDefault();const button=document.getElementById('saveHeroProduct');button.disabled=true;button.textContent='Saving…';try{const saved=await nfApi('/api/admin/hero-product',{method:'PUT',body:JSON.stringify({productId:document.getElementById('heroProductSelect').value})});heroProductId=saved.productId||'';renderHeroProduct();renderHeroProductOptions();toast('Homepage product saved')}catch(error){toast(error.message)}finally{button.disabled=false;button.textContent='Save homepage product'}});
     document.getElementById('socialLinksForm').addEventListener('submit',async event=>{
       event.preventDefault();const button=document.getElementById('saveSocialLinks');button.disabled=true;button.textContent='Saving…';
       try{
@@ -809,10 +778,10 @@ body{background:#f5efe4;color:#203421}
       }catch(error){toast(error.message)}
       finally{button.disabled=false;button.textContent='Save social links'}
     });
-    async function nfLoadProducts(){const response=await fetch('/api/products');if(!response.ok)throw new Error('Product API is not ready.');products=await response.json();renderProducts();}
+    async function nfLoadProducts(){const response=await fetch('/api/products');if(!response.ok)throw new Error('Product API is not ready.');products=await response.json();renderProducts();try{const settings=await fetch('/api/hero-product');if(settings.ok){const data=await settings.json();heroProductId=data.productId||'';renderHeroProduct()}}catch(error){console.warn('Homepage product setting unavailable:',error.message)}}
     async function nfLoadAdminData(){
       orders=await nfApi('/api/admin/orders');
-      const p=await nfApi('/api/products');products=p;renderProducts();renderAdmin();
+      const p=await nfApi('/api/products');products=p;try{const setting=await nfApi('/api/admin/hero-product');heroProductId=setting.productId||''}catch(error){heroProductId='';console.warn('Homepage product setting unavailable:',error.message)}renderProducts();renderAdmin();renderHeroProductOptions();
     }
     function nfOpenLogin(){document.getElementById('adminLoginError').textContent='';document.getElementById('adminPassword').value='';showModal('adminLoginModal')}
     async function nfOpenAdmin(){
@@ -1006,54 +975,6 @@ body{background:#f5efe4;color:#203421}
 <script>
 (()=>{
  const init=()=>{
-  const stage=document.getElementById('nf3dStage');
-  const image=document.getElementById('nfJacketFrame');
-  if(stage&&image){
-   const frames=[
-    '/assets/nf-jacket-angle-1.webp',
-    '/assets/nf-jacket-angle-2.webp',
-    '/assets/nf-jacket-angle-3.webp',
-    '/assets/nf-jacket-angle-4.webp'
-   ];
-   let current=0,startX=0,dragging=false,lastStep=0,autoTimer=null,pausedUntil=0;
-   const thumbs=[...stage.querySelectorAll('.nf-angle-thumb')];
-   const dots=[...stage.querySelectorAll('.nf-product-dots span')];
-   const show=(index)=>{
-    current=(index+frames.length)%frames.length;
-    image.classList.add('nf-changing');
-    window.setTimeout(()=>{
-     image.src=frames[current];
-     image.alt=['front','three-quarter front','back','side'][current]+' view of NEXT FORM NF bomber jacket';
-     image.onload=()=>image.classList.remove('nf-changing');
-     window.setTimeout(()=>image.classList.remove('nf-changing'),260);
-    },90);
-    thumbs.forEach((b,i)=>b.classList.toggle('active',i===current));
-    dots.forEach((d,i)=>d.classList.toggle('active',i===current%3));
-   };
-   const pauseAuto=()=>{pausedUntil=Date.now()+9000};
-   thumbs.forEach((b)=>b.addEventListener('click',()=>{pauseAuto();show(Number(b.dataset.angle))}));
-   stage.querySelector('.nf-rotate-prev')?.addEventListener('click',e=>{e.stopPropagation();pauseAuto();show(current-1)});
-   stage.querySelector('.nf-rotate-next')?.addEventListener('click',e=>{e.stopPropagation();pauseAuto();show(current+1)});
-   stage.addEventListener('pointerdown',e=>{
-    if(e.target.closest('button'))return;
-    dragging=true;startX=e.clientX;lastStep=0;stage.classList.add('is-dragging');
-    stage.setPointerCapture?.(e.pointerId);pauseAuto();
-   });
-   stage.addEventListener('pointermove',e=>{
-    if(!dragging)return;
-    const delta=e.clientX-startX;
-    const step=Math.trunc(delta/48);
-    if(step!==lastStep){show(current-(step-lastStep));lastStep=step}
-   });
-   const endDrag=()=>{dragging=false;stage.classList.remove('is-dragging')};
-   stage.addEventListener('pointerup',endDrag);
-   stage.addEventListener('pointercancel',endDrag);
-   stage.addEventListener('lostpointercapture',endDrag);
-   autoTimer=window.setInterval(()=>{
-    if(!dragging&&Date.now()>pausedUntil&&document.visibilityState==='visible')show(current+1);
-   },2600);
-   show(0);
-  }
   document.querySelectorAll('[data-hero-category]').forEach(card=>{
    card.addEventListener('click',()=>{
     const category=card.dataset.heroCategory;
