@@ -629,7 +629,43 @@ body{background:#f5efe4;color:#203421}
       document.getElementById('productModalContent').innerHTML=`
         <div class="product-detail">
           <div class="detail-image" id="nfProductViewer" aria-label="Interactive product preview">
-             <div class="viewer-topline"><span class="viewer-chip">NEXT FORM · PRODUCT VIEW</span><span class="viewer-chip">${p.imageNoModel&&p.imageNoModel!==p.image?'01 / 02':'01 / 01'}</span></div>
+           <div class="detail-image" id="nfProductViewer">
+  ${
+    p.modelUrl
+      ? `
+        <model-viewer
+          id="nf3DModel"
+          src="${escapeHtml(p.modelUrl)}"
+          alt="${escapeHtml(p.name)}"
+          camera-controls
+          auto-rotate
+          rotation-per-second="18deg"
+          shadow-intensity="1"
+          exposure="1"
+          environment-image="neutral"
+          style="width:100%;height:500px;background:#e0ddd6;"
+        ></model-viewer>
+
+        <div style="padding:10px;display:flex;gap:10px;">
+          <button class="btn" id="nfRotateToggle">
+            Pause Rotation
+          </button>
+
+          <button class="btn btn-outline" id="nfReset3D">
+            Reset View
+          </button>
+        </div>
+      `
+      : `
+        <img
+          src="${escapeHtml(p.image)}"
+          alt="${escapeHtml(p.name)}"
+          style="width:100%;height:500px;object-fit:cover;"
+        >
+      `
+  }
+</div>
+<div class="viewer-topline"><span class="viewer-chip">NEXT FORM · PRODUCT VIEW</span><span class="viewer-chip">${p.imageNoModel&&p.imageNoModel!==p.image?'01 / 02':'01 / 01'}</span></div>
             <img class="viewer-image" id="nfViewerImage" src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)} — interactive product preview" draggable="false">
             <div class="viewer-hint"><span class="hint-orbit">↻</span> Drag to explore · 3D-style view</div>
             <div class="viewer-controls">
