@@ -690,6 +690,24 @@ body{background:#f5efe4;color:#203421}
           </div>
         </div>`;
       showModal('productModal');
+     const model = document.getElementById('nf3DModel');
+
+if (model) {
+  const toggle = document.getElementById('nfRotateToggle');
+  const reset = document.getElementById('nfReset3D');
+
+  toggle.addEventListener('click', () => {
+    model.autoRotate = !model.autoRotate;
+    toggle.textContent = model.autoRotate
+      ? 'Pause Rotation'
+      : 'Start Rotation';
+  });
+
+  reset.addEventListener('click', () => {
+    model.cameraOrbit = '0deg 75deg 2.5m';
+    model.cameraTarget = 'auto';
+  });
+}
       nfInitProductViewer();
        document.querySelectorAll('#productModalContent [data-product-photo]').forEach(button=>button.addEventListener('click',()=>{
          const noModel=button.dataset.productPhoto==='no-model';
