@@ -155,7 +155,7 @@ app.put('/api/admin/hero-product', requireAdmin, async (req, res) => {
     hero_product_id: productId || null,
     hero_model_url: modelUrl || null,
     updated_at: new Date().toISOString()
-  }).select('hero_product_id').single();
+  }).select('hero_product_id,hero_model_url').single();
   if (error) {
     console.error('Homepage product save:', error.message);
     return res.status(503).json({ error: 'Could not save. Apply the homepage product database migration first.' });
